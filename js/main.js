@@ -126,6 +126,34 @@ const fillAds = (quantity) => {
   return adsList;
 };
 
+const renderPhotos = (photos, photosSection) => {
+  for (let i = 0; i < photos.length; i++) {
+    if (i === 0) {
+      photosSection.querySelector(`.popup__photo`).src = photos[i];
+    } else {
+      const newPhoto = photosSection.querySelector(`.popup__photo`).cloneNode(false);
+      newPhoto.src = photos[i];
+      fragment.appendChild(newPhoto);
+    }
+  }
+
+  photosSection.appendChild(fragment);
+};
+
+const renderFeatures = (cardElement, features) => {
+  const featuresSection = cardElement.querySelector(`.popup__features`);
+
+  for (let i = 0; i < features.length; i++) {
+    cardElement.querySelector(`.${featuresClasses[features[i]]}`).textContent = features[i];
+  }
+
+  for (let i = featuresSection.children.length - 1; i >= 0; i--) {
+    if (featuresSection.children[i].textContent.trim().length === 0) {
+      cardElement.querySelector(`.popup__features`).removeChild(featuresSection.children[i]);
+    }
+  }
+};
+
 const adsList = fillAds(ADS_AMOUNT);
 map.classList.remove(`map--faded`);
 
@@ -146,10 +174,6 @@ const setPin = (i, ads) => {
 
 const setCard = (adsElement) => {
   const cardElement = cardTemplate.cloneNode(true);
-  const photosSection = cardElement.querySelector(`.popup__photos`);
-  const photo = photosSection.querySelector(`.popup__photo`);
-  const featuresSection = cardElement.querySelector(`.popup__features`);
-  const featuresChildren = featuresSection.children;
   const {title, address, price, type, rooms, guests, checkin, checkout, description, features, photos} = adsElement.offer;
   const roomsWord = declension([`комната`, `комнаты`, `комнат`], rooms);
   const guestsWord = declension([`гостя`, `гостей`, `гостей`], guests);
@@ -161,29 +185,8 @@ const setCard = (adsElement) => {
   cardElement.querySelector(`.popup__text--capacity`).textContent = `${rooms} ${roomsWord} для ${guests} ${guestsWord}`;
   cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${checkin} выезд до ${checkout}`;
   cardElement.querySelector(`.popup__description`).textContent = description;
-
-  for (let i = 0; i < features.length; i++) {
-    const currentElement = cardElement.querySelector(`.${featuresClasses[features[i]]}`);
-    currentElement.textContent = features[i];
-  }
-
-  for (let i = featuresChildren.length - 1; i >= 0; i--) {
-    if (featuresChildren[i].textContent.trim().length === 0) {
-      featuresSection.removeChild(featuresChildren[i]);
-    }
-  }
-
-  for (let i = 0; i < photos.length; i++) {
-    if (i === 0) {
-      photo.src = photos[i];
-    } else {
-      const newPhoto = photo.cloneNode(false);
-      newPhoto.src = photos[i];
-      fragment.appendChild(newPhoto);
-    }
-  }
-
-  photosSection.appendChild(fragment);
+  renderFeatures(cardElement, features);
+  renderPhotos(photos, cardElement.querySelector(`.popup__photos`));
   cardElement.querySelector(`.popup__avatar`).src = adsElement.author.avatar;
 
   return cardElement;
