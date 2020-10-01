@@ -126,32 +126,28 @@ const fillAds = (quantity) => {
   return adsList;
 };
 
-const renderPhotos = (photos, photosSection) => {
-  for (let i = 0; i < photos.length; i++) {
-    if (i === 0) {
-      photosSection.querySelector(`.popup__photo`).src = photos[i];
-    } else {
-      const newPhoto = photosSection.querySelector(`.popup__photo`).cloneNode(false);
-      newPhoto.src = photos[i];
-      fragment.appendChild(newPhoto);
-    }
-  }
+const renderPhotos = (photos, container) => {
+  const photoTemplate = container.querySelector(`.popup__photo`);
+  let newPhoto;
+  container.innerHTML = ``;
 
-  photosSection.appendChild(fragment);
+  photos.forEach((item) => {
+    newPhoto = photoTemplate.cloneNode(false);
+    newPhoto.src = item;
+    fragment.appendChild(newPhoto);
+  });
+
+  container.appendChild(fragment);
 };
 
-const renderFeatures = (cardElement, features) => {
-  const featuresSection = cardElement.querySelector(`.popup__features`);
+const renderFeatures = (features, container) => {
+  container.innerHTML = ``;
 
-  for (let i = 0; i < features.length; i++) {
-    cardElement.querySelector(`.${featuresClasses[features[i]]}`).textContent = features[i];
-  }
-
-  for (let i = featuresSection.children.length - 1; i >= 0; i--) {
-    if (featuresSection.children[i].textContent.trim().length === 0) {
-      cardElement.querySelector(`.popup__features`).removeChild(featuresSection.children[i]);
-    }
-  }
+  features.forEach((item) => {
+    const li = document.createElement(`li`);
+    li.classList.add(`popup__feature`, featuresClasses[item]);
+    container.appendChild(li);
+  });
 };
 
 const adsList = fillAds(ADS_AMOUNT);
@@ -185,7 +181,7 @@ const setCard = (adsElement) => {
   cardElement.querySelector(`.popup__text--capacity`).textContent = `${rooms} ${roomsWord} для ${guests} ${guestsWord}`;
   cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${checkin} выезд до ${checkout}`;
   cardElement.querySelector(`.popup__description`).textContent = description;
-  renderFeatures(cardElement, features);
+  renderFeatures(features, cardElement.querySelector(`.popup__features`));
   renderPhotos(photos, cardElement.querySelector(`.popup__photos`));
   cardElement.querySelector(`.popup__avatar`).src = adsElement.author.avatar;
 
