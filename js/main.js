@@ -1,7 +1,8 @@
 "use strict";
 
 const ADS_AMOUNT = 8;
-
+const LEFT_MOUSE_BUTTON = [0, 4];
+const ENTER_KEY = `Enter`;
 const TITLES = [
   `Роскошные апартаменты, идеальное место для постоянного проживания `,
   `Дом для отпуска с садом и расскошной террасой`,
@@ -53,10 +54,24 @@ const featuresClasses = {
 };
 
 const map = document.querySelector(`.map`);
+const mapPinMain = map.querySelector(`.map__pin--main`);
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const mapPins = map.querySelector(`.map__pins`);
 const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const mapFilterContainer = map.querySelector(`.map__filters-container`);
+const mapFilters = document.querySelector(`.map__filters`);
+const adForm = document.querySelector(`.ad-form`);
+const initialMainPinSettings = {
+  location: {
+    x: mapPinMain.offsetLeft,
+    y: mapPinMain.offsetTop,
+  },
+  size: {
+    width: mapPinMain.offsetWidth,
+    height: mapPinMain.offsetHeight
+  }
+};
+let isInactive = true;
 
 const getRandomFromNumbers = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -150,18 +165,31 @@ const renderFeatures = (features, container) => {
   });
 };
 
-const adsList = fillAds(ADS_AMOUNT);
-map.classList.remove(`map--faded`);
+const setInputValue = (element, value) => {
+  element.value = value;
+};
 
+
+const adsList = fillAds(ADS_AMOUNT);
 const fragment = document.createDocumentFragment();
+
+const getPinLocation = (location, pinSizes) => {
+  return {
+    x: Math.round(location.x + pinSizes.width / 2),
+    y: Math.round(location.y + pinSizes.height / 2)
+  };
+};
 
 const setPin = (i, ads) => {
   const pinElement = pinTemplate.cloneNode(true);
-  const pinWidth = pinElement.style.width;
-  const pinHeight = pinElement.style.height;
+  const pinSizes = {
+    width: pinElement.style.width,
+    height: pinElement.style.height
+  };
 
-  pinElement.style.left = `${ads[i].location.x + pinWidth / 2}px`;
-  pinElement.style.top = `${ads[i].location.y + pinHeight}px`;
+  const pinLocation = getPinLocation(ads[i].location, pinSizes);
+  pinElement.style.left = `${pinLocation.x}px`;
+  pinElement.style.top = `${pinLocation.y}px`;
   pinElement.querySelector(`img`).src = ads[i].author.avatar;
   pinElement.querySelector(`img`).alt = ads[i].author.title;
 
@@ -199,6 +227,102 @@ const renderPinsOnMap = (ads) => {
 const renderCardOnMap = (adsElement) => {
   map.insertBefore(setCard(adsElement), mapFilterContainer);
 };
+
+const setDisabled = (forms, inactive) => {
+  forms.forEach((form) => {
+    Array.from(form.children).forEach((item) => {
+      item.disabled = inactive;
+    });
+  });
+};
+
+const setState = (inactive) => {
+  if (inactive) {
+    adForm.classList.add(`ad-form--disabled`);
+    map.classList.add(`map--faded`);
+  } else {
+    adForm.classList.remove(`ad-form--disabled`);
+    map.classList.remove(`map--faded`);
+  }
+
+  setDisabled([mapFilters, adForm], inactive);
+};
+
+const onMousePressed = (evt) => {
+  if (LEFT_MOUSE_BUTTON.includes(evt.button)) {
+    activatedPage(evt);
+  }
+};
+
+const onEnterPress = (evt) => {
+  if (evt.key === ENTER_KEY) {
+    activatedPage(evt);
+  }
+};
+
+const setValidationCapacityHandler = () => {
+  if (parseInt(adForm.rooms.value, 10) === 100 && parseInt(adForm.capacity.value, 10) > 0) {
+    adForm.capacity.setCustomValidity(`Не для гостей`);
+  } else if (parseInt(adForm.rooms.value, 10) < parseInt(adForm.capacity.value, 10)) {
+    adForm.capacity.setCustomValidity(`На всех гостей комнат не хватит`);
+  } else if (parseInt(adForm.rooms.value, 10) !== 100 && !parseInt(adForm.capacity.value, 10)) {
+    adForm.capacity.setCustomValidity(`Для гостей`);
+  } else {
+    adForm.capacity.setCustomValidity(``);
+  }
+};
+
+const setCapacityDisabled = () => {
+  const roomValue = parseInt(adForm.rooms.value, 10);
+
+  Array.from(adForm.capacity.options).forEach((item) => {
+    const optionCapacity = parseInt(item.value, 10);
+
+    if (roomValue === 100) {
+      item.disabled = !!optionCapacity;
+    } else {
+      item.disabled = roomValue < optionCapacity || !optionCapacity;
+    }
+  });
+};
+
+const setCapacityValue = () => {
+  adForm.capacity.value = adForm.rooms.value < 100 ? adForm.rooms.value : 0;
+};
+
+const activatedPage = (evt) => {
+  const mainPinLocation = getPinLocation(initialMainPinSettings.location, initialMainPinSettings.size);
+  isInactive = false;
+  setInputValue(adForm.querySelector(`#address`), `${mainPinLocation.x}, ${mainPinLocation.y}`);
+  evt.preventDefault();
+  setState(isInactive);
+  setCapacityValue();
+  setCapacityDisabled();
+  adForm.title.focus();
+  adForm.capacity.style.outline = ``;
+  mapPinMain.removeEventListener(`mousedown`, activatedPage);
+  mapPinMain.removeEventListener(`keypress`, activatedPage);
+};
+
+mapPinMain.addEventListener(`mousedown`, (evt) => {
+  onMousePressed(evt);
+});
+
+mapPinMain.addEventListener(`keypress`, (evt) => {
+  onEnterPress(evt);
+});
+
+adForm.rooms.addEventListener(`change`, () => {
+  setCapacityValue();
+  setCapacityDisabled();
+});
+
+adForm.capacity.addEventListener(`change`, () => {
+  setValidationCapacityHandler();
+});
+
+setState(isInactive);
+adForm.querySelector(`.ad-form__submit`).addEventListener(`click`, setValidationCapacityHandler);
 
 renderPinsOnMap(adsList);
 renderCardOnMap(adsList[0]);
