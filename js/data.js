@@ -1,6 +1,7 @@
 "use strict";
 
 (() => {
+  const ADS_AMOUNT = 8;
   const TITLES = [
     `Роскошные апартаменты, идеальное место для постоянного проживания `,
     `Дом для отпуска с садом и расскошной террасой`,
@@ -42,6 +43,53 @@
     bungalo: `Бунгало`,
   };
 
+  const createTemplate = (i) => {
+    const title = TITLES[i];
+    const type = window.util.getRandomFromArray(TYPES);
+    const checkin = window.util.getRandomFromArray(CHECK_IN_OUT);
+    const checkout = window.util.getRandomFromArray(CHECK_IN_OUT);
+    const features = window.util.getMixArray(FEATURES);
+    const description = window.util.getRandomFromArray(DESCRIPTIONS);
+    const photos = window.util.getMixArray(PHOTOS);
+    const location = {
+      x: window.util.getRandomFromNumbers(40, 1160),
+      y: window.util.getRandomFromNumbers(130, 630)
+    };
+    const index = window.util.setLeadingZero(i + 1);
+
+    return {
+      author: {
+        avatar: `img/avatars/user` + index + `.png`
+      },
+      offer: {
+        title,
+        address: location.x + `, ` + location.y,
+        price: window.util.getRandomFromNumbers(0, 1000001),
+        type,
+        rooms: window.util.getRandomFromNumbers(1, 99),
+        guests: window.util.getRandomFromNumbers(1, 30),
+        checkin,
+        checkout,
+        features,
+        description,
+        photos
+      },
+      location
+    };
+  };
+
+  const fillAds = (quantity) => {
+    const adsList = [];
+
+    for (let i = 0; i < quantity; i++) {
+      adsList.push(createTemplate(i));
+    }
+
+    return adsList;
+  };
+
+  const adsList = fillAds(ADS_AMOUNT);
+
   window.data = {
     TITLES,
     TYPES,
@@ -49,6 +97,7 @@
     FEATURES,
     PHOTOS,
     DESCRIPTIONS,
-    typesOfAccommodation
+    typesOfAccommodation,
+    adsList
   };
 })();

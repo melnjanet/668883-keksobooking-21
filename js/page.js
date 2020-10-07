@@ -32,8 +32,8 @@
     setState(false);
     window.form.setCapacityValue();
     window.form.setCapacityDisabled();
-    window.map.renderPinsOnMap(window.card.adsList);
-    window.map.renderCardOnMap(window.card.adsList[0]);
+    window.pin.renderPinsOnMap(window.data.adsList);
+    window.card.renderCardOnMap(window.data.adsList[0]);
     adForm.title.focus();
     adForm.capacity.style.outline = ``;
 

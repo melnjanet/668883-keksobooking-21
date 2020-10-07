@@ -4,6 +4,8 @@
   const map = document.querySelector(`.map`);
   const mapPinMain = map.querySelector(`.map__pin--main`);
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+  const mapPins = map.querySelector(`.map__pins`);
+  const fragment = document.createDocumentFragment();
 
   const initialMainPinSettings = {
     location: {
@@ -39,9 +41,18 @@
     return pinElement;
   };
 
+  const renderPinsOnMap = (ads) => {
+    for (let i = 0; i < ads.length; i++) {
+      fragment.appendChild(window.pin.setPin(i, ads));
+    }
+
+    mapPins.appendChild(fragment);
+  };
+
   window.pin = {
     initialMainPinSettings,
     setPin,
-    getPinLocation
+    getPinLocation,
+    renderPinsOnMap
   };
 })();

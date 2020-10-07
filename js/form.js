@@ -33,12 +33,12 @@
     adForm.capacity.value = adForm.rooms.value < 100 ? adForm.rooms.value : 0;
   };
 
-  const roomsChange = () => {
+  const onRoomsChange = () => {
     setCapacityValue();
     setCapacityDisabled();
   };
 
-  const capacityChange = () => {
+  const onCapacityChange = () => {
     setValidationCapacityHandler();
   };
 
@@ -46,9 +46,9 @@
     setValidationCapacityHandler();
   };
 
-  adForm.capacity.addEventListener(`change`, capacityChange);
+  adForm.capacity.addEventListener(`change`, onCapacityChange);
 
-  adForm.rooms.addEventListener(`change`, roomsChange);
+  adForm.rooms.addEventListener(`change`, onRoomsChange);
 
   adForm.querySelector(`.ad-form__submit`).addEventListener(`click`, onAdFormClick);
 

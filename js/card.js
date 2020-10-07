@@ -1,7 +1,6 @@
 "use strict";
 
 (() => {
-  const ADS_AMOUNT = 8;
   const featuresClasses = {
     wifi: `popup__feature--wifi`,
     dishwasher: `popup__feature--dishwasher`,
@@ -10,53 +9,11 @@
     elevator: `popup__feature--elevator`,
     conditioner: `popup__feature--conditioner`,
   };
+
+  const map = document.querySelector(`.map`);
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
   const fragment = document.createDocumentFragment();
-
-  const createTemplate = (i) => {
-    const title = window.data.TITLES[i];
-    const type = window.util.getRandomFromArray(window.data.TYPES);
-    const checkin = window.util.getRandomFromArray(window.data.CHECK_IN_OUT);
-    const checkout = window.util.getRandomFromArray(window.data.CHECK_IN_OUT);
-    const features = window.util.getMixArray(window.data.FEATURES);
-    const description = window.util.getRandomFromArray(window.data.DESCRIPTIONS);
-    const photos = window.util.getMixArray(window.data.PHOTOS);
-    const location = {
-      x: window.util.getRandomFromNumbers(40, 1160),
-      y: window.util.getRandomFromNumbers(130, 630)
-    };
-    const index = window.util.setLeadingZero(i + 1);
-
-    return {
-      author: {
-        avatar: `img/avatars/user` + index + `.png`
-      },
-      offer: {
-        title,
-        address: location.x + `, ` + location.y,
-        price: window.util.getRandomFromNumbers(0, 1000001),
-        type,
-        rooms: window.util.getRandomFromNumbers(1, 99),
-        guests: window.util.getRandomFromNumbers(1, 30),
-        checkin,
-        checkout,
-        features,
-        description,
-        photos
-      },
-      location
-    };
-  };
-
-  const fillAds = (quantity) => {
-    const adsList = [];
-
-    for (let i = 0; i < quantity; i++) {
-      adsList.push(createTemplate(i));
-    }
-
-    return adsList;
-  };
+  const mapFilterContainer = map.querySelector(`.map__filters-container`);
 
   const renderPhotos = (photos, container) => {
     const photoTemplate = container.querySelector(`.popup__photo`);
@@ -82,8 +39,6 @@
     });
   };
 
-  const adsList = fillAds(ADS_AMOUNT);
-
   const setCard = (adsElement) => {
     const cardElement = cardTemplate.cloneNode(true);
     const {title, address, price, type, rooms, guests, checkin, checkout, description, features, photos} = adsElement.offer;
@@ -104,8 +59,12 @@
     return cardElement;
   };
 
+  const renderCardOnMap = (adsElement) => {
+    map.insertBefore(window.card.setCard(adsElement), mapFilterContainer);
+  };
+
   window.card = {
-    adsList,
-    setCard
+    setCard,
+    renderCardOnMap
   };
 })();
