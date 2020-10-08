@@ -1,4 +1,5 @@
 "use strict";
+
 (() => {
-  window.page.setState();
+  window.map = {};
 })();
