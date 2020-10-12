@@ -32,7 +32,7 @@
     setState(false);
     window.form.setCapacityValue();
     window.form.setCapacityDisabled();
-    window.pin.renderPinsOnMap(window.data.adsList);
+    window.backend.load(window.pin.renderPinsOnMap, window.errors.renderErrorNode);
     window.card.renderCardOnMap(window.data.adsList[0]);
     adForm.title.focus();
     adForm.capacity.style.outline = ``;
