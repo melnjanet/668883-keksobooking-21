@@ -33,6 +33,7 @@
     };
 
     const pinLocation = getPinLocation(ads[i].location, pinSizes);
+    pinElement.dataset.indexNumber = i;
     pinElement.style.left = `${pinLocation.x}px`;
     pinElement.style.top = `${pinLocation.y}px`;
     pinElement.querySelector(`img`).src = ads[i].author.avatar;
@@ -41,13 +42,41 @@
     return pinElement;
   };
 
+  const onPinClick = (evt) => {
+    let id;
+
+    if (!evt.target.classList.contains(`map__pin--main`)
+      && !evt.target.parentNode.classList.contains(`map__pin--main`)
+      || evt.target.classList.contains(`map__pin`)
+      && evt.target.parentNode.classList.contains(`map__pin`)) {
+
+      if (evt.target.nodeName === `BUTTON`) {
+        id = evt.target.dataset.indexNumber;
+      } else if (evt.target.nodeName === `IMG`) {
+        id = evt.target.parentNode.dataset.indexNumber;
+      }
+
+      window.card.renderCardOnMap(window.data.adsList[id]);
+    }
+  };
+
   const renderPinsOnMap = (ads) => {
     for (let i = 0; i < ads.length; i++) {
-      fragment.appendChild(window.pin.setPin(i, ads));
+      fragment.appendChild(setPin(i, ads));
     }
 
     mapPins.appendChild(fragment);
   };
+
+  const onEnterPress = (evt) => {
+    if (evt.code === window.constant.ENTER_KEY) {
+      evt.preventDefault();
+      window.card.renderCardOnMap(window.data.adsList[evt.target.dataset.indexNumber]);
+    }
+  };
+
+  mapPins.addEventListener(`click`, onPinClick);
+  mapPins.addEventListener(`keydown`, onEnterPress);
 
   window.pin = {
     initialMainPinSettings,
