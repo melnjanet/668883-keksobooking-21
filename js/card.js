@@ -79,6 +79,7 @@
 
   const onEscPress = (evt) => {
     const mapCard = map.querySelector(`.map__card`);
+
     if (evt.code === window.constant.ESC_KEY) {
       if (map.contains(mapCard)) {
         mapCard.remove();

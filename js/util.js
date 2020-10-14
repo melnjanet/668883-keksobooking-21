@@ -28,12 +28,41 @@
     element.value = value;
   };
 
+  const checkFieldValidation = (field) => {
+    let charsWord = ``;
+
+    if (field.minLength || field.maxLength) {
+      charsWord = window.util.declension([`символ`, `символа`, `символов`], field.value.length);
+    }
+
+    if (field.required && field.validity.valueMissing) {
+      field.setCustomValidity(`Пожалуйста, заполните это поле.`);
+    } else if (field.minLength && field.validity.tooShort) {
+      field.setCustomValidity(`Пожалуйста введите минимум ${field.minLength} ${charsWord} (введено ${field.value.length} ${charsWord})`);
+    } else if (field.maxLength && field.validity.tooShort) {
+      field.setCustomValidity(`Пожалуйста введите максимум ${field.maxLength} ${charsWord} (введено ${field.value.length} ${charsWord})`);
+    } else if (field.min && field.validity.rangeUnderflow) {
+      field.setCustomValidity(`Минимальное значение ${field.min}`);
+    } else if (field.max && field.validity.rangeOverflow) {
+      field.setCustomValidity(`Максимальное значение ${field.max}`);
+    } else {
+      field.setCustomValidity(``);
+    }
+  };
+
+  const checkFormValidation = (form) => {
+    Array.from(form.elements).forEach((item) => {
+      checkFieldValidation(item);
+    });
+  };
+
   window.util = {
     getRandomFromNumbers,
     getRandomFromArray,
     getMixArray,
     setLeadingZero,
     declension,
-    setInputValue
+    setInputValue,
+    checkFormValidation
   };
 })();

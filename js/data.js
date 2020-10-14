@@ -13,7 +13,7 @@
     `Маленький уютный домик в дали от суеты`
   ];
 
-  const TYPES = [`palace`, `flat`, `house`, `bungalo`];
+  const TYPES = [`palace`, `flat`, `house`, `bungalow`];
 
   const CHECK_IN_OUT = [`12:00`, `13:00`, `14:00`];
 
@@ -40,7 +40,7 @@
     palace: `Дворец`,
     flat: `Квартира`,
     house: `Дом`,
-    bungalo: `Бунгало`,
+    bungalow: `Бунгало`,
   };
 
   const createTemplate = (i) => {

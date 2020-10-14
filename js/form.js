@@ -1,6 +1,13 @@
 "use strict";
 
 (() => {
+  const minPrice = {
+    bungalow: 0,
+    flat: 1000,
+    house: 5000,
+    palace: 10000
+  };
+
   const adForm = document.querySelector(`.ad-form`);
 
   const setValidationCapacityHandler = () => {
@@ -42,15 +49,55 @@
     setValidationCapacityHandler();
   };
 
+  const onTimeinChange = () => {
+    adForm.timeout.value = adForm.timein.value;
+  };
+
+  const onTimeoutChange = () => {
+    adForm.timein.value = adForm.timeout.value;
+  };
+
+  const onTypeChange = () => {
+    adForm.price.min = minPrice[adForm.type.value];
+    adForm.price.placeholder = minPrice[adForm.type.value];
+  };
+
   const onAdFormClick = () => {
     setValidationCapacityHandler();
+    window.util.checkFormValidation(adForm);
+
+    if (adForm.checkValidity()) {
+      adForm.submit();
+    }
+  };
+
+  const onSubmitForm = (evt) => {
+    evt.preventDefault();
+    window.util.checkFormValidation(adForm);
+    if (adForm.checkValidity()) {
+      adForm.submit();
+    }
+  };
+
+  const onResetForm = (evt) => {
+    evt.reset();
   };
 
   adForm.capacity.addEventListener(`change`, onCapacityChange);
 
   adForm.rooms.addEventListener(`change`, onRoomsChange);
 
+  adForm.type.addEventListener(`change`, onTypeChange);
+
+  adForm.timein.addEventListener(`change`, onTimeinChange);
+
+  adForm.timeout.addEventListener(`change`, onTimeoutChange);
+
   adForm.querySelector(`.ad-form__submit`).addEventListener(`click`, onAdFormClick);
+
+  adForm.addEventListener(`submit`, onSubmitForm);
+
+  adForm.addEventListener(`reset`, onResetForm);
 
   window.form = {
     setCapacityValue,

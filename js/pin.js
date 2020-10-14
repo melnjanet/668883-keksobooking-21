@@ -45,11 +45,9 @@
   const onPinClick = (evt) => {
     let id;
 
-    if (!evt.target.classList.contains(`map__pin--main`)
-      && !evt.target.parentNode.classList.contains(`map__pin--main`)
-      || evt.target.classList.contains(`map__pin`)
-      && evt.target.parentNode.classList.contains(`map__pin`)) {
-
+    if ((evt.target.classList.contains(`map__pin`) || evt.target.parentNode.classList.contains(`map__pin`)) &&
+      (!evt.target.classList.contains(`map__pin--main`) && !evt.target.parentNode.classList.contains(`map__pin--main`))
+    ) {
       if (evt.target.nodeName === `BUTTON`) {
         id = evt.target.dataset.indexNumber;
       } else if (evt.target.nodeName === `IMG`) {
