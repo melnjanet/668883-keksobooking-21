@@ -15,6 +15,13 @@
   const fragment = document.createDocumentFragment();
   const mapFilterContainer = map.querySelector(`.map__filters-container`);
 
+  const removeCard = () => {
+    const mapCard = map.querySelector(`.map__card`);
+
+    if (map.contains(mapCard)) {
+      mapCard.remove();
+    }
+  };
 
   const renderPhotos = (photos, container) => {
     const photoTemplate = container.querySelector(`.popup__photo`);
@@ -46,7 +53,6 @@
     const roomsWord = window.util.declension([`комната`, `комнаты`, `комнат`], rooms);
     const guestsWord = window.util.declension([`гостя`, `гостей`, `гостей`], guests);
 
-
     cardElement.querySelector(`.popup__title`).textContent = title;
     cardElement.querySelector(`.popup__text--address`).textContent = address;
     cardElement.querySelector(`.popup__text--price`).firstChild.textContent = `${price}\u20BD`;
@@ -64,26 +70,18 @@
   };
 
   const renderCardOnMap = (adsElement) => {
+    removeCard();
     map.insertBefore(setCard(adsElement), mapFilterContainer);
   };
 
   const onPopupCloseClick = () => {
-    const mapCard = map.querySelector(`.map__card`);
-
-    if (map.contains(mapCard)) {
-      mapCard.remove();
-    }
-
+    removeCard();
     document.removeEventListener(`keydown`, onEscPress);
   };
 
   const onEscPress = (evt) => {
-    const mapCard = map.querySelector(`.map__card`);
-
     if (evt.code === window.constant.ESC_KEY) {
-      if (map.contains(mapCard)) {
-        mapCard.remove();
-      }
+      removeCard();
     }
   };
 
