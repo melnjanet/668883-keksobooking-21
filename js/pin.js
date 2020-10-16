@@ -25,31 +25,30 @@
     };
   };
 
-  const setPin = (i, ads) => {
+  const setPin = (ads) => {
     const pinElement = pinTemplate.cloneNode(true);
     const pinSizes = {
       width: pinElement.style.width,
       height: pinElement.style.height
     };
 
-    const pinLocation = getPinLocation(ads[i].location, pinSizes);
+    const pinLocation = getPinLocation(ads.location, pinSizes);
 
     const onPinClick = () => {
-      window.card.renderCardOnMap(ads[i]);
+      window.card.renderCardOnMap(ads);
     };
 
     const onPinEnterPress = (evt) => {
       if (evt.code === window.constant.ENTER_KEY) {
         evt.preventDefault();
-        window.card.renderCardOnMap(ads[i]);
+        window.card.renderCardOnMap(ads);
       }
     };
 
-    pinElement.dataset.indexNumber = i;
     pinElement.style.left = `${pinLocation.x}px`;
     pinElement.style.top = `${pinLocation.y}px`;
-    pinElement.querySelector(`img`).src = ads[i].author.avatar;
-    pinElement.querySelector(`img`).alt = ads[i].author.title;
+    pinElement.querySelector(`img`).src = ads.author.avatar;
+    pinElement.querySelector(`img`).alt = ads.author.title;
     pinElement.addEventListener(`click`, onPinClick);
     pinElement.addEventListener(`keydown`, onPinEnterPress);
 
@@ -57,9 +56,9 @@
   };
 
   const renderPinsOnMap = (ads) => {
-    for (let i = 0; i < ads.length; i++) {
-      fragment.appendChild(setPin(i, ads));
-    }
+    ads.forEach((item) => {
+      fragment.appendChild(setPin(item));
+    });
 
     mapPins.appendChild(fragment);
   };
