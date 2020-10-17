@@ -33,10 +33,8 @@
     window.form.setCapacityValue();
     window.form.setCapacityDisabled();
     window.backend.load(window.pin.renderPinsOnMap, window.errors.renderErrorNode);
-    window.card.renderCardOnMap(window.data.adsList[0]);
     adForm.title.focus();
     adForm.capacity.style.outline = ``;
-
     mapPinMain.removeEventListener(`mousedown`, window.mainPin.onMainPinMouseDown);
     mapPinMain.removeEventListener(`keydown`, window.mainPin.onMainPinEnterDown);
   };

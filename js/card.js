@@ -15,6 +15,14 @@
   const fragment = document.createDocumentFragment();
   const mapFilterContainer = map.querySelector(`.map__filters-container`);
 
+  const removeCard = () => {
+    const mapCard = map.querySelector(`.map__card`);
+
+    if (map.contains(mapCard)) {
+      mapCard.remove();
+    }
+  };
+
   const renderPhotos = (photos, container) => {
     const photoTemplate = container.querySelector(`.popup__photo`);
     let newPhoto;
@@ -55,12 +63,26 @@
     renderFeatures(features, cardElement.querySelector(`.popup__features`));
     renderPhotos(photos, cardElement.querySelector(`.popup__photos`));
     cardElement.querySelector(`.popup__avatar`).src = adsElement.author.avatar;
+    cardElement.querySelector(`.popup__close`).addEventListener(`click`, onPopupCloseClick);
+    document.addEventListener(`keydown`, onEscPress);
 
     return cardElement;
   };
 
   const renderCardOnMap = (adsElement) => {
-    map.insertBefore(window.card.setCard(adsElement), mapFilterContainer);
+    removeCard();
+    map.insertBefore(setCard(adsElement), mapFilterContainer);
+  };
+
+  const onPopupCloseClick = () => {
+    removeCard();
+    document.removeEventListener(`keydown`, onEscPress);
+  };
+
+  const onEscPress = (evt) => {
+    if (evt.code === window.constant.ESC_KEY) {
+      removeCard();
+    }
   };
 
   window.card = {
