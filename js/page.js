@@ -1,10 +1,10 @@
 "use strict";
 
 (() => {
-  const map = document.querySelector(`.map`);
   const mapFilters = document.querySelector(`.map__filters`);
-  const adForm = document.querySelector(`.ad-form`);
-  const mapPinMain = map.querySelector(`.map__pin--main`);
+
+  window.constant.mapPinMain.addEventListener(`mousedown`, window.mainPin.onMainPinMouseDown);
+  window.constant.mapPinMain.addEventListener(`keydown`, window.mainPin.onMainPinEnterDown);
 
   const setDisabled = (forms, isInactive = true) => {
     forms.forEach((form) => {
@@ -16,27 +16,25 @@
 
   const setState = (isInactive = true) => {
     if (isInactive) {
-      adForm.classList.add(`ad-form--disabled`);
-      map.classList.add(`map--faded`);
+      window.constant.adForm.classList.add(`ad-form--disabled`);
+      window.constant.map.classList.add(`map--faded`);
     } else {
-      adForm.classList.remove(`ad-form--disabled`);
-      map.classList.remove(`map--faded`);
+      window.constant.adForm.classList.remove(`ad-form--disabled`);
+      window.constant.map.classList.remove(`map--faded`);
     }
 
-    setDisabled([mapFilters, adForm], isInactive);
+    setDisabled([mapFilters, window.constant.adForm], isInactive);
   };
 
   const activatedPage = () => {
-    const mainPinLocation = window.pin.getPinLocation(window.mainPin.initialMainPinSettings.location, window.mainPin.initialMainPinSettings.size);
-    window.util.setInputValue(adForm.querySelector(`#address`), `${mainPinLocation.x}, ${mainPinLocation.y}`);
+    const mainPinLocation = window.pin.getPinLocation(window.constant.initialMainPinSettings.location, window.constant.initialMainPinSettings.size);
+    window.util.setInputValue(window.constant.adForm.querySelector(`#address`), `${mainPinLocation.x}, ${mainPinLocation.y}`);
     setState(false);
     window.form.setCapacityValue();
     window.form.setCapacityDisabled();
     window.backend.load(window.pin.renderPinsOnMap, window.errors.renderErrorNode);
-    adForm.title.focus();
-    adForm.capacity.style.outline = ``;
-    mapPinMain.removeEventListener(`mousedown`, window.mainPin.onMainPinMouseDown);
-    mapPinMain.removeEventListener(`keydown`, window.mainPin.onMainPinEnterDown);
+    window.constant.adForm.title.focus();
+    window.constant.adForm.capacity.style.outline = ``;
   };
 
   window.page = {

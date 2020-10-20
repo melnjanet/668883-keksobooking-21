@@ -1,24 +1,14 @@
 "use strict";
 
 (() => {
-  const featuresClasses = {
-    wifi: `popup__feature--wifi`,
-    dishwasher: `popup__feature--dishwasher`,
-    parking: `popup__feature--parking`,
-    washer: `popup__feature--washer`,
-    elevator: `popup__feature--elevator`,
-    conditioner: `popup__feature--conditioner`,
-  };
-
-  const map = document.querySelector(`.map`);
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
   const fragment = document.createDocumentFragment();
-  const mapFilterContainer = map.querySelector(`.map__filters-container`);
+  const mapFilterContainer = window.constant.map.querySelector(`.map__filters-container`);
 
   const removeCard = () => {
-    const mapCard = map.querySelector(`.map__card`);
+    const mapCard = window.constant.map.querySelector(`.map__card`);
 
-    if (map.contains(mapCard)) {
+    if (window.constant.map.contains(mapCard)) {
       mapCard.remove();
     }
   };
@@ -42,7 +32,7 @@
 
     features.forEach((item) => {
       const li = document.createElement(`li`);
-      li.classList.add(`popup__feature`, featuresClasses[item]);
+      li.classList.add(`popup__feature`, window.constant.featuresClasses[item]);
       container.appendChild(li);
     });
   };
@@ -56,7 +46,7 @@
     cardElement.querySelector(`.popup__title`).textContent = title;
     cardElement.querySelector(`.popup__text--address`).textContent = address;
     cardElement.querySelector(`.popup__text--price`).firstChild.textContent = `${price}\u20BD`;
-    cardElement.querySelector(`.popup__type`).textContent = window.data.typesOfAccommodation[type];
+    cardElement.querySelector(`.popup__type`).textContent = window.constant.typesOfAccommodation[type];
     cardElement.querySelector(`.popup__text--capacity`).textContent = `${rooms} ${roomsWord} для ${guests} ${guestsWord}`;
     cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${checkin} выезд до ${checkout}`;
     cardElement.querySelector(`.popup__description`).textContent = description;
@@ -71,7 +61,7 @@
 
   const renderCardOnMap = (adsElement) => {
     removeCard();
-    map.insertBefore(setCard(adsElement), mapFilterContainer);
+    window.constant.map.insertBefore(setCard(adsElement), mapFilterContainer);
   };
 
   const onPopupCloseClick = () => {
