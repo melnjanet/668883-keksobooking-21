@@ -8,17 +8,19 @@
     }
   };
 
-  const onMainPinMouseDown = function (evt) {
+  const onMainPinMouseClick = (evt) => {
     if (window.constant.LEFT_MOUSE_BUTTON.includes(evt.button)) {
+      evt.preventDefault();
       window.page.activatedPage();
-      window.constant.mapPinMain.removeEventListener(`mousedown`, onMainPinMouseDown);
-      window.constant.mapPinMain.removeEventListener(`keydown`, onMainPinEnterDown);
-      window.dragging.draggingMainPin();
     }
   };
 
+  window.constant.mapPinMain.addEventListener(`mousedown`, window.dragging.draggingMainPin);
+  window.constant.mapPinMain.addEventListener(`click`, onMainPinMouseClick);
+  window.constant.mapPinMain.addEventListener(`keydown`, onMainPinEnterDown);
+
   window.mainPin = {
+    onMainPinMouseClick,
     onMainPinEnterDown,
-    onMainPinMouseDown
   };
 })();

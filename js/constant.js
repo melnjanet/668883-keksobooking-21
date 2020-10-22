@@ -4,23 +4,30 @@
   const LEFT_MOUSE_BUTTON = [0, 4];
   const ENTER_KEY = `Enter`;
   const ESC_KEY = `Escape`;
-  const PIN_POINTER_HEIGHT = 16;
-  const MAP_AREA_TOP = 130;
-  const MAP_AREA_BOTTOM = 630;
-  const MAP_AREA_LEFT = 0;
+  const PIN_POINTER_HEIGHT = 18;
   const map = document.querySelector(`.map`);
   const mapPinMain = map.querySelector(`.map__pin--main`);
   const adForm = document.querySelector(`.ad-form`);
 
-  const initialMainPinSettings = {
-    location: {
-      x: mapPinMain.offsetLeft,
-      y: mapPinMain.offsetTop,
+  const mapDragArea = {
+    Y: {
+      TOP: 130,
+      BOTTOM: 630,
     },
-    size: {
-      width: mapPinMain.offsetWidth,
-      height: mapPinMain.offsetHeight + PIN_POINTER_HEIGHT,
-    }
+    X: {
+      LEFT: 0,
+      RIGHT: 1200,
+    },
+  };
+
+  const mainPinSize = {
+    width: mapPinMain.offsetWidth,
+    height: mapPinMain.offsetHeight,
+  };
+
+  const mainPinLocation = {
+    x: mapPinMain.offsetLeft,
+    y: mapPinMain.offsetTop,
   };
 
   const typesOfAccommodation = {
@@ -44,14 +51,13 @@
     ENTER_KEY,
     ESC_KEY,
     PIN_POINTER_HEIGHT,
-    MAP_AREA_TOP,
-    MAP_AREA_BOTTOM,
-    MAP_AREA_LEFT,
+    mapDragArea,
     adForm,
     map,
     mapPinMain,
     featuresClasses,
-    initialMainPinSettings,
+    mainPinSize,
+    mainPinLocation,
     typesOfAccommodation
   };
 })();

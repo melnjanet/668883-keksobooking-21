@@ -8,8 +8,8 @@
 
   const getPinLocation = (location, pinSizes) => {
     return {
-      x: Math.floor(location.x + pinSizes.width / 2),
-      y: Math.floor(location.y + pinSizes.height / 2)
+      x: location.x - Math.floor(pinSizes.width / 2),
+      y: location.y - pinSizes.height - window.constant.PIN_POINTER_HEIGHT,
     };
   };
 
@@ -34,7 +34,7 @@
     };
 
     pinElement.style.left = `${pinLocation.x}px`;
-    pinElement.style.top = `${pinLocation.y - window.constant.PIN_POINTER_HEIGHT}px`;
+    pinElement.style.top = `${pinLocation.y}px`;
     pinElement.querySelector(`img`).src = ads.author.avatar;
     pinElement.querySelector(`img`).alt = ads.author.title;
     pinElement.addEventListener(`click`, onPinClick);
