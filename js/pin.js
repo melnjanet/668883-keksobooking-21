@@ -1,27 +1,15 @@
 "use strict";
 
 (() => {
-  const map = document.querySelector(`.map`);
-  const mapPinMain = map.querySelector(`.map__pin--main`);
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-  const mapPins = map.querySelector(`.map__pins`);
+  const mapPins = window.constant.map.querySelector(`.map__pins`);
   const fragment = document.createDocumentFragment();
 
-  const initialMainPinSettings = {
-    location: {
-      x: mapPinMain.offsetLeft,
-      y: mapPinMain.offsetTop,
-    },
-    size: {
-      width: mapPinMain.offsetWidth,
-      height: mapPinMain.offsetHeight
-    }
-  };
 
   const getPinLocation = (location, pinSizes) => {
     return {
-      x: Math.round(location.x + pinSizes.width / 2),
-      y: Math.round(location.y + pinSizes.height / 2)
+      x: location.x - Math.floor(pinSizes.width / 2),
+      y: location.y - pinSizes.height - window.constant.PIN_POINTER_HEIGHT,
     };
   };
 
@@ -64,7 +52,6 @@
   };
 
   window.pin = {
-    initialMainPinSettings,
     setPin,
     getPinLocation,
     renderPinsOnMap

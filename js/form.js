@@ -8,24 +8,22 @@
     palace: 10000
   };
 
-  const adForm = document.querySelector(`.ad-form`);
-
   const setValidationCapacityHandler = () => {
-    if (parseInt(adForm.rooms.value, 10) === 100 && parseInt(adForm.capacity.value, 10) > 0) {
-      adForm.capacity.setCustomValidity(`Не для гостей`);
-    } else if (parseInt(adForm.rooms.value, 10) < parseInt(adForm.capacity.value, 10)) {
-      adForm.capacity.setCustomValidity(`На всех гостей комнат не хватит`);
-    } else if (parseInt(adForm.rooms.value, 10) !== 100 && !parseInt(adForm.capacity.value, 10)) {
-      adForm.capacity.setCustomValidity(`Для гостей`);
+    if (parseInt(window.constant.adForm.rooms.value, 10) === 100 && parseInt(window.constant.adForm.capacity.value, 10) > 0) {
+      window.constant.adForm.capacity.setCustomValidity(`Не для гостей`);
+    } else if (parseInt(window.constant.adForm.rooms.value, 10) < parseInt(window.constant.adForm.capacity.value, 10)) {
+      window.constant.adForm.capacity.setCustomValidity(`На всех гостей комнат не хватит`);
+    } else if (parseInt(window.constant.adForm.rooms.value, 10) !== 100 && !parseInt(window.constant.adForm.capacity.value, 10)) {
+      window.constant.adForm.capacity.setCustomValidity(`Для гостей`);
     } else {
-      adForm.capacity.setCustomValidity(``);
+      window.constant.adForm.capacity.setCustomValidity(``);
     }
   };
 
   const setCapacityDisabled = () => {
-    const roomValue = parseInt(adForm.rooms.value, 10);
+    const roomValue = parseInt(window.constant.adForm.rooms.value, 10);
 
-    Array.from(adForm.capacity.options).forEach((item) => {
+    Array.from(window.constant.adForm.capacity.options).forEach((item) => {
       const optionCapacity = parseInt(item.value, 10);
 
       if (roomValue === 100) {
@@ -37,7 +35,7 @@
   };
 
   const setCapacityValue = () => {
-    adForm.capacity.value = adForm.rooms.value < 100 ? adForm.rooms.value : 0;
+    window.constant.adForm.capacity.value = window.constant.adForm.rooms.value < 100 ? window.constant.adForm.rooms.value : 0;
   };
 
   const onRoomsChange = () => {
@@ -50,32 +48,32 @@
   };
 
   const onTimeinChange = () => {
-    adForm.timeout.value = adForm.timein.value;
+    window.constant.adForm.timeout.value = window.constant.adForm.timein.value;
   };
 
   const onTimeoutChange = () => {
-    adForm.timein.value = adForm.timeout.value;
+    window.constant.adForm.timein.value = window.constant.adForm.timeout.value;
   };
 
   const onTypeChange = () => {
-    adForm.price.min = minPrice[adForm.type.value];
-    adForm.price.placeholder = minPrice[adForm.type.value];
+    window.constant.adForm.price.min = minPrice[window.constant.adForm.type.value];
+    window.constant.adForm.price.placeholder = minPrice[window.constant.adForm.type.value];
   };
 
   const onAdFormClick = () => {
     setValidationCapacityHandler();
-    window.util.checkFormValidation(adForm);
+    window.util.checkFormValidation(window.constant.adForm);
 
-    if (adForm.checkValidity()) {
-      adForm.submit();
+    if (window.constant.adForm.checkValidity()) {
+      window.constant.adForm.submit();
     }
   };
 
   const onSubmitForm = (evt) => {
     evt.preventDefault();
-    window.util.checkFormValidation(adForm);
-    if (adForm.checkValidity()) {
-      adForm.submit();
+    window.util.checkFormValidation(window.constant.adForm);
+    if (window.constant.adForm.checkValidity()) {
+      window.constant.adForm.submit();
     }
   };
 
@@ -83,24 +81,29 @@
     evt.reset();
   };
 
-  adForm.capacity.addEventListener(`change`, onCapacityChange);
+  const setAddress = (x, y) => {
+    window.constant.adForm.address.value = `${x}, ${y}`;
+  };
 
-  adForm.rooms.addEventListener(`change`, onRoomsChange);
+  window.constant.adForm.capacity.addEventListener(`change`, onCapacityChange);
 
-  adForm.type.addEventListener(`change`, onTypeChange);
+  window.constant.adForm.rooms.addEventListener(`change`, onRoomsChange);
 
-  adForm.timein.addEventListener(`change`, onTimeinChange);
+  window.constant.adForm.type.addEventListener(`change`, onTypeChange);
 
-  adForm.timeout.addEventListener(`change`, onTimeoutChange);
+  window.constant.adForm.timein.addEventListener(`change`, onTimeinChange);
 
-  adForm.querySelector(`.ad-form__submit`).addEventListener(`click`, onAdFormClick);
+  window.constant.adForm.timeout.addEventListener(`change`, onTimeoutChange);
 
-  adForm.addEventListener(`submit`, onSubmitForm);
+  window.constant.adForm.querySelector(`.ad-form__submit`).addEventListener(`click`, onAdFormClick);
 
-  adForm.addEventListener(`reset`, onResetForm);
+  window.constant.adForm.addEventListener(`submit`, onSubmitForm);
+
+  window.constant.adForm.addEventListener(`reset`, onResetForm);
 
   window.form = {
     setCapacityValue,
     setCapacityDisabled,
+    setAddress,
   };
 })();
