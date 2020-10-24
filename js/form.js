@@ -1,6 +1,9 @@
 "use strict";
 
 (() => {
+  const successMessage = document.querySelector(`#success`).content.querySelector(`.success`);
+  const errorMessage = document.querySelector(`#error`).content.querySelector(`.error`);
+
   const minPrice = {
     bungalow: 0,
     flat: 1000,
@@ -60,50 +63,120 @@
     window.constant.adForm.price.placeholder = minPrice[window.constant.adForm.type.value];
   };
 
-  const onAdFormClick = () => {
+  const setSuccessMessage = () => {
+    const successNode = successMessage.cloneNode(true);
+    document.body.appendChild(successNode);
+
+    const onEscPress = (evt) => {
+      evt.preventDefault();
+
+      if (evt.code === window.constant.ESC_KEY) {
+        document.querySelector(`.success`).remove();
+        document.removeEventListener(`keydown`, onEscPress);
+      }
+    };
+
+    const onClick = (evt) => {
+      evt.preventDefault();
+      if (evt.code === window.constant.ESC_KEY) {
+        document.querySelector(`.success`).remove();
+        document.removeEventListener(`click`, onClick);
+      }
+    };
+
+    document.addEventListener(`keydown`, onEscPress);
+    document.addEventListener(`click`, onClick);
+  };
+
+  const setErrorMessage = () => {
+    const errorNode = errorMessage.cloneNode(true);
+    document.body.appendChild(errorNode);
+
+    const onEscPress = (evt) => {
+      evt.preventDefault();
+      document.querySelector(`.error`).remove();
+      document.removeEventListener(`keydown`, onEscPress);
+    };
+
+    const onClick = (evt) => {
+      evt.preventDefault();
+      document.querySelector(`.error`).remove();
+      document.removeEventListener(`click`, onClick);
+    };
+
+    document.addEventListener(`keydown`, onEscPress);
+    document.addEventListener(`click`, onClick);
+  };
+
+  const successHandler = () => {
+    window.page.setState(true);
+    window.page.deactivatedPage();
+    setSuccessMessage();
+  };
+
+  const errorHandler = () => {
+    setErrorMessage();
+  };
+
+  const onAdFormSubmitClick = () => {
     setValidationCapacityHandler();
     window.util.checkFormValidation(window.constant.adForm);
 
     if (window.constant.adForm.checkValidity()) {
-      window.constant.adForm.submit();
+      window.backend.save(successHandler, errorHandler, new FormData(window.constant.adForm));
     }
   };
 
-  const onSubmitForm = (evt) => {
+  const onAdFormSubmit = (evt) => {
     evt.preventDefault();
     window.util.checkFormValidation(window.constant.adForm);
+
     if (window.constant.adForm.checkValidity()) {
-      window.constant.adForm.submit();
+      window.backend.save(successHandler, errorHandler, new FormData(window.constant.adForm));
     }
   };
 
-  const onResetForm = (evt) => {
-    evt.reset();
+  const onResetFormClick = () => {
+    window.page.setState(true);
+    window.page.deactivatedPage();
+  };
+
+  const onResetFormKeydown = (evt) => {
+    if (evt.code === window.constant.ENTER_KEY) {
+      window.page.setState(true);
+      window.page.deactivatedPage();
+    }
   };
 
   const setAddress = (x, y) => {
     window.constant.adForm.address.value = `${x}, ${y}`;
   };
 
-  window.constant.adForm.capacity.addEventListener(`change`, onCapacityChange);
+  const addListenersToFields = () => {
+    window.constant.adForm.capacity.addEventListener(`change`, onCapacityChange);
+    window.constant.adForm.rooms.addEventListener(`change`, onRoomsChange);
+    window.constant.adForm.type.addEventListener(`change`, onTypeChange);
+    window.constant.adForm.timein.addEventListener(`change`, onTimeinChange);
+    window.constant.adForm.timeout.addEventListener(`change`, onTimeoutChange);
+  };
 
-  window.constant.adForm.rooms.addEventListener(`change`, onRoomsChange);
-
-  window.constant.adForm.type.addEventListener(`change`, onTypeChange);
-
-  window.constant.adForm.timein.addEventListener(`change`, onTimeinChange);
-
-  window.constant.adForm.timeout.addEventListener(`change`, onTimeoutChange);
-
-  window.constant.adForm.querySelector(`.ad-form__submit`).addEventListener(`click`, onAdFormClick);
-
-  window.constant.adForm.addEventListener(`submit`, onSubmitForm);
-
-  window.constant.adForm.addEventListener(`reset`, onResetForm);
+  const removeListenersFromFields = () => {
+    window.constant.adForm.capacity.removeEventListener(`change`, onCapacityChange);
+    window.constant.adForm.rooms.removeEventListener(`change`, onRoomsChange);
+    window.constant.adForm.type.removeEventListener(`change`, onTypeChange);
+    window.constant.adForm.timein.removeEventListener(`change`, onTimeinChange);
+    window.constant.adForm.timeout.removeEventListener(`change`, onTimeoutChange);
+  };
 
   window.form = {
     setCapacityValue,
     setCapacityDisabled,
+    onResetFormClick,
+    onResetFormKeydown,
     setAddress,
+    onAdFormSubmit,
+    onAdFormSubmitClick,
+    addListenersToFields,
+    removeListenersFromFields,
   };
 })();

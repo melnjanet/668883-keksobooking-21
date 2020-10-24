@@ -25,6 +25,11 @@
     height: mapPinMain.offsetHeight,
   };
 
+  const initialMainPinLocation = {
+    X: mapPinMain.style.left,
+    Y: mapPinMain.style.top,
+  };
+
   const mainPinLocation = {
     x: mapPinMain.offsetLeft,
     y: mapPinMain.offsetTop,
@@ -58,6 +63,7 @@
     featuresClasses,
     mainPinSize,
     mainPinLocation,
-    typesOfAccommodation
+    typesOfAccommodation,
+    initialMainPinLocation,
   };
 })();
