@@ -4,12 +4,6 @@
   const successMessage = document.querySelector(`#success`).content.querySelector(`.success`);
   const errorMessage = document.querySelector(`#error`).content.querySelector(`.error`);
 
-  const minPrice = {
-    bungalow: 0,
-    flat: 1000,
-    house: 5000,
-    palace: 10000
-  };
 
   const setValidationCapacityHandler = () => {
     if (parseInt(window.constant.adForm.rooms.value, 10) === 100 && parseInt(window.constant.adForm.capacity.value, 10) > 0) {
@@ -59,8 +53,8 @@
   };
 
   const onTypeChange = () => {
-    window.constant.adForm.price.min = minPrice[window.constant.adForm.type.value];
-    window.constant.adForm.price.placeholder = minPrice[window.constant.adForm.type.value];
+    window.constant.adForm.price.min = window.constant.minPrice[window.constant.adForm.type.value];
+    window.constant.adForm.price.placeholder = window.constant.minPrice[window.constant.adForm.type.value];
   };
 
   const setSuccessMessage = () => {
@@ -68,9 +62,8 @@
     document.body.appendChild(successNode);
 
     const onEscPress = (evt) => {
-      evt.preventDefault();
-
       if (evt.code === window.constant.ESC_KEY) {
+        evt.preventDefault();
         document.querySelector(`.success`).remove();
         document.removeEventListener(`keydown`, onEscPress);
       }
@@ -78,10 +71,8 @@
 
     const onClick = (evt) => {
       evt.preventDefault();
-      if (evt.code === window.constant.ESC_KEY) {
-        document.querySelector(`.success`).remove();
-        document.removeEventListener(`click`, onClick);
-      }
+      document.querySelector(`.success`).remove();
+      document.removeEventListener(`click`, onClick);
     };
 
     document.addEventListener(`keydown`, onEscPress);
@@ -93,9 +84,11 @@
     document.body.appendChild(errorNode);
 
     const onEscPress = (evt) => {
-      evt.preventDefault();
-      document.querySelector(`.error`).remove();
-      document.removeEventListener(`keydown`, onEscPress);
+      if (evt.code === window.constant.ESC_KEY) {
+        evt.preventDefault();
+        document.querySelector(`.error`).remove();
+        document.removeEventListener(`keydown`, onEscPress);
+      }
     };
 
     const onClick = (evt) => {

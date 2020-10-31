@@ -77,6 +77,7 @@
 
   window.card = {
     setCard,
-    renderCardOnMap
+    renderCardOnMap,
+    removeCard,
   };
 })();

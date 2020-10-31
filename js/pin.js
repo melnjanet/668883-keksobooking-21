@@ -4,7 +4,20 @@
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
   const mapPins = window.constant.map.querySelector(`.map__pins`);
   const fragment = document.createDocumentFragment();
+  const mapFilter = document.querySelector(`.map__filters`);
+  let pinsData = [];
   const pins = [];
+
+  const successHandler = (data) => {
+    pinsData = data;
+
+    if (data.length > 0) {
+      updatePins(data.length);
+      window.page.setDisabled(mapFilter, false);
+    } else {
+      window.page.setDisabled(mapFilter, true);
+    }
+  };
 
   const getPinLocation = (location, pinSizes) => {
     return {
@@ -44,9 +57,23 @@
     return pinElement;
   };
 
-  const renderPinsOnMap = (ads) => {
-    ads.forEach((item) => {
-      fragment.appendChild(setPin(item));
+  mapFilter.addEventListener(`change`, window.filters.onMapFilterChange);
+
+  const updatePins = (quantity = window.constant.MAX_PINS_COUNT) => {
+    deletePinsOnMap();
+    renderPinsOnMap(window.filters.filterOffers(pinsData), quantity);
+  };
+
+
+  const renderPinsOnMap = (ads, quantity) => {
+    const takeNumber = ads.length > quantity
+      ? quantity
+      : ads.length;
+
+    window.util.getRandomFromArray(ads, quantity).forEach((item, index) => {
+      if (index < takeNumber) {
+        fragment.appendChild(setPin(item));
+      }
     });
 
     mapPins.appendChild(fragment);
@@ -61,9 +88,11 @@
   };
 
   window.pin = {
+    pinsData,
     setPin,
     getPinLocation,
-    renderPinsOnMap,
     deletePinsOnMap,
+    updatePins,
+    successHandler,
   };
 })();

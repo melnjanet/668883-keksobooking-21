@@ -1,14 +1,11 @@
 "use strict";
 
 (() => {
-  const mapFilters = document.querySelector(`.map__filters`);
   const mainPinLocation = window.pin.getPinLocation(window.constant.mainPinLocation, window.constant.mainPinSize);
 
-  const setDisabled = (forms, isInactive = true) => {
-    forms.forEach((form) => {
-      Array.from(form.children).forEach((item) => {
-        item.disabled = isInactive;
-      });
+  const setDisabled = (form, isInactive = true) => {
+    Array.from(form.children).forEach((item) => {
+      item.disabled = isInactive;
     });
   };
 
@@ -28,8 +25,6 @@
       document.querySelector(`.ad-form__reset`).addEventListener(`click`, window.form.onResetFormClick);
       document.querySelector(`.ad-form__reset`).addEventListener(`keydown`, window.form.onResetFormKeydown);
     }
-
-    setDisabled([mapFilters, window.constant.adForm], isInactive);
   };
 
   const activatedPage = () => {
@@ -37,7 +32,7 @@
     window.util.setInputValue(window.constant.adForm.querySelector(`#address`), `${mainPinLocation.x}, ${mainPinLocation.y}`);
     window.form.setCapacityValue();
     window.form.setCapacityDisabled();
-    window.backend.load(window.pin.renderPinsOnMap, window.errors.renderErrorNode);
+    window.backend.load(window.pin.successHandler, window.errors.renderErrorNode);
     window.constant.adForm.title.focus();
     window.constant.adForm.capacity.style.outline = ``;
     window.form.addListenersToFields();
@@ -60,6 +55,7 @@
   window.page = {
     activatedPage,
     deactivatedPage,
-    setState
+    setState,
+    setDisabled,
   };
 })();

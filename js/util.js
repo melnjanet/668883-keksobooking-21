@@ -1,22 +1,13 @@
 "use strict";
 
 (() => {
+  let lastTimeout;
   const getRandomFromNumbers = (min, max) => {
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
-  const getRandomFromArray = (array) => {
-    return array[Math.floor(Math.random() * array.length)];
-  };
-
-  const getMixArray = (array) => {
-    array.sort(() => 0.5 - Math.random());
-
-    return array.slice(getRandomFromNumbers(0, array.length));
-  };
-
-  const setLeadingZero = (index) => {
-    return index < 10 ? `0${index}` : index;
+  const getRandomFromArray = (array, n) => {
+    return array.sort(() => Math.random() - Math.random()).slice(0, n);
   };
 
   const declension = (forms, number) => {
@@ -56,13 +47,19 @@
     });
   };
 
+  const debounce = (cb) => {
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = window.setTimeout(cb, window.constant.DEBOUNCE_INTERVAL);
+  };
+
   window.util = {
     getRandomFromNumbers,
     getRandomFromArray,
-    getMixArray,
-    setLeadingZero,
     declension,
     setInputValue,
-    checkFormValidation
+    checkFormValidation,
+    debounce,
   };
 })();
