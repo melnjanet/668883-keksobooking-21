@@ -1,71 +1,68 @@
 "use strict";
 
 (() => {
-  const mapFilter = document.querySelector(`.map__filters`);
-  let changedFeatures = [];
+  const filterForm = document.querySelector(`.map__filters`);
+  const housingTypeFilterElement = filterForm.querySelector(`#housing-type`);
+  const housingPriceFilterElement = filterForm.querySelector(`#housing-price`);
+  const housingRoomsFilterElement = filterForm.querySelector(`#housing-rooms`);
+  const housingGuestsFilterElement = filterForm.querySelector(`#housing-guests`);
+  const filterFormFeaturesElement = filterForm.querySelector(`.map__features`);
 
-  const check = (offer, checkedValue) => {
-    let result = false;
-
-    switch (checkedValue) {
-      case `low`:
-        result = offer.price < window.constant.priceLimit.LOW;
-        break;
-      case `middle`:
-        result = offer.price >= window.constant.priceLimit.LOW && offer.price < window.constant.priceLimit.HIGH;
-        break;
-      case `high`:
-        result = offer.price >= window.constant.priceLimit.HIGH;
-        break;
-    }
-
-    return result;
+  const getTypeFilter = (data) => {
+    return (housingTypeFilterElement.value !== `any`) ? housingTypeFilterElement.value === data.offer.type : true;
   };
 
-  const filterItem = (item, changed) => {
-    let result = true;
+  const getPriceFilter = (data) => {
+    return housingPriceFilterElement.value === `any` ||
+      (housingPriceFilterElement.value === `low` && data.offer.price < window.constant.priceLimits.LOW) ||
+      (housingPriceFilterElement.value === `middle` && (data.offer.price >= window.constant.priceLimits.LOW && data.offer.price <= window.constant.priceLimits.HIGH) ||
+        (housingPriceFilterElement.value === `high` && data.offer.price > window.constant.priceLimits.HIGH));
+  };
 
-    if (changed.value !== `any`) {
-      switch (changed.id) {
-        case `housing-price`:
-          result = check(item, changed.value);
-          break;
-        case `housing-features`:
-          result = changedFeatures.length > 0 ? changedFeatures.every((r)=> item.features.includes(r)) : true;
-          break;
-        default:
-          result = changed.value === item[changed.id.split(`-`)[1]].toString();
+  const getRoomsFilter = (data) => {
+    return housingRoomsFilterElement.value !== `any` ? +housingRoomsFilterElement.value === data.offer.rooms : true;
+  };
+
+  const getGuestsFilter = (data) => {
+    return housingGuestsFilterElement.value !== `any` ? +housingGuestsFilterElement.value === data.offer.guests : true;
+  };
+
+  const getFeaturesFilter = (data) => {
+    const checkedFilterFeatures = filterFormFeaturesElement.querySelectorAll(`.map__checkbox:checked`);
+
+    if (checkedFilterFeatures.length === 0) {
+      return true;
+    }
+
+    let isFeature = true;
+
+    checkedFilterFeatures.forEach((checkedFeature) => {
+      if (!data.offer.features.includes(checkedFeature.value)) {
+        isFeature = false;
       }
-    }
-
-    return result;
-  };
-
-  const filterOffers = (offers) => {
-    return offers.filter((item) => {
-      return filterItem(item.offer, mapFilter[`housing-type`])
-        && filterItem(item.offer, mapFilter[`housing-price`])
-        && filterItem(item.offer, mapFilter[`housing-rooms`])
-        && filterItem(item.offer, mapFilter[`housing-guests`])
-        && filterItem(item.offer, mapFilter[`housing-features`]);
     });
+
+    return isFeature;
   };
 
-  const onMapFilterChange = (evt) => {
+  const applyAll = (offers) => {
+    return offers.filter((item) => {
+      return getTypeFilter(item) &&
+        getPriceFilter(item) &&
+        getRoomsFilter(item) &&
+        getGuestsFilter(item) &&
+        getFeaturesFilter(item);
+    }).slice(0, window.constant.MAX_PIN_ON_MAP);
+  };
+
+  const onMapFilterChange = () => {
+    window.map.deletePinsOnMap();
     window.card.removeCard();
-    if (evt.target.name === `features`) {
-      if (changedFeatures.indexOf(evt.target.value) === -1 && evt.target.checked === true) {
-        changedFeatures.push(evt.target.value);
-      } else {
-        const featureIndex = changedFeatures.indexOf(evt.target.value);
-        changedFeatures.splice(featureIndex, 1);
-      }
-    }
-
-    window.util.debounce(window.pin.updatePins);
+    window.util.debounce(window.map.renderPinsOnMap(window.filters.applyAll(window.constant.pinsData)));
   };
+
   window.filters = {
-    filterOffers,
-    onMapFilterChange
+    applyAll,
+    onMapFilterChange,
   };
 })();

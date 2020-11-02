@@ -3,7 +3,6 @@
 (() => {
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
   const fragment = document.createDocumentFragment();
-  const mapFilterContainer = window.constant.map.querySelector(`.map__filters-container`);
 
   const removeCard = () => {
     const mapCard = window.constant.map.querySelector(`.map__card`);
@@ -59,11 +58,6 @@
     return cardElement;
   };
 
-  const renderCardOnMap = (adsElement) => {
-    removeCard();
-    window.constant.map.insertBefore(setCard(adsElement), mapFilterContainer);
-  };
-
   const onPopupCloseClick = () => {
     removeCard();
     document.removeEventListener(`keydown`, onEscPress);
@@ -77,7 +71,6 @@
 
   window.card = {
     setCard,
-    renderCardOnMap,
     removeCard,
   };
 })();

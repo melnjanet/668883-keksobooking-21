@@ -161,6 +161,8 @@
     window.constant.adForm.timeout.removeEventListener(`change`, onTimeoutChange);
   };
 
+  window.constant.mapFilter.addEventListener(`change`, window.filters.onMapFilterChange);
+
   window.form = {
     setCapacityValue,
     setCapacityDisabled,

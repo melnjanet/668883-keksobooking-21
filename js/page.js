@@ -24,7 +24,10 @@
       window.constant.adForm.addEventListener(`submit`, window.form.onAdFormSubmit);
       document.querySelector(`.ad-form__reset`).addEventListener(`click`, window.form.onResetFormClick);
       document.querySelector(`.ad-form__reset`).addEventListener(`keydown`, window.form.onResetFormKeydown);
+      isInactive = window.constant.pinsData.length ? true : isInactive;
     }
+
+    window.page.setDisabled(window.constant.mapFilter, isInactive);
   };
 
   const activatedPage = () => {
@@ -32,7 +35,7 @@
     window.util.setInputValue(window.constant.adForm.querySelector(`#address`), `${mainPinLocation.x}, ${mainPinLocation.y}`);
     window.form.setCapacityValue();
     window.form.setCapacityDisabled();
-    window.backend.load(window.pin.successHandler, window.errors.renderErrorNode);
+    window.backend.load(window.success.successHandler, window.errors.renderErrorNode);
     window.constant.adForm.title.focus();
     window.constant.adForm.capacity.style.outline = ``;
     window.form.addListenersToFields();

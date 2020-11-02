@@ -5,11 +5,13 @@
   const ENTER_KEY = `Enter`;
   const ESC_KEY = `Escape`;
   const PIN_POINTER_HEIGHT = 18;
-  const MAX_PINS_COUNT = 5;
+  const MAX_PIN_ON_MAP = 5;
   const DEBOUNCE_INTERVAL = 1500;
   const map = document.querySelector(`.map`);
   const mapPinMain = map.querySelector(`.map__pin--main`);
   const adForm = document.querySelector(`.ad-form`);
+  const mapFilter = document.querySelector(`.map__filters`);
+  let pinsData = [];
 
   const mapDragArea = {
     Y: {
@@ -29,7 +31,7 @@
     palace: 10000
   };
 
-  const priceLimit = {
+  const priceLimits = {
     LOW: 10000,
     HIGH: 50000
   };
@@ -70,11 +72,11 @@
     ENTER_KEY,
     ESC_KEY,
     PIN_POINTER_HEIGHT,
-    MAX_PINS_COUNT,
+    MAX_PIN_ON_MAP,
     DEBOUNCE_INTERVAL,
     mapDragArea,
     minPrice,
-    priceLimit,
+    priceLimits,
     adForm,
     map,
     mapPinMain,
@@ -83,5 +85,7 @@
     mainPinLocation,
     typesOfAccommodation,
     initialMainPinLocation,
+    mapFilter,
+    pinsData,
   };
 })();
