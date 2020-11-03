@@ -2,8 +2,6 @@
 
 (() => {
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-  const mapPins = window.constant.map.querySelector(`.map__pins`);
-  const fragment = document.createDocumentFragment();
   const pins = [];
 
   const getPinLocation = (location, pinSizes) => {
@@ -23,13 +21,13 @@
     const pinLocation = getPinLocation(ads.location, pinSizes);
 
     const onPinClick = () => {
-      window.card.renderCardOnMap(ads);
+      window.map.renderCardOnMap(ads);
     };
 
     const onPinEnterPress = (evt) => {
       if (evt.code === window.constant.ENTER_KEY) {
         evt.preventDefault();
-        window.card.renderCardOnMap(ads);
+        window.map.renderCardOnMap(ads);
       }
     };
 
@@ -44,26 +42,9 @@
     return pinElement;
   };
 
-  const renderPinsOnMap = (ads) => {
-    ads.forEach((item) => {
-      fragment.appendChild(setPin(item));
-    });
-
-    mapPins.appendChild(fragment);
-  };
-
-  const deletePinsOnMap = () => {
-    if (pins.length > 0) {
-      pins.forEach((item) => {
-        item.remove();
-      });
-    }
-  };
-
   window.pin = {
+    pins,
     setPin,
     getPinLocation,
-    renderPinsOnMap,
-    deletePinsOnMap,
   };
 })();
