@@ -1,4 +1,3 @@
 "use strict";
-(() => {
-  window.page.setState();
-})();
+
+window.page.setState();
