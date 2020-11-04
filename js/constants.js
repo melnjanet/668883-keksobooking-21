@@ -6,6 +6,8 @@ const ESC_KEY = `Escape`;
 const PIN_POINTER_HEIGHT = 18;
 const MAX_PIN_ON_MAP = 5;
 const DEBOUNCE_INTERVAL = 1500;
+const AVATAR_SRC = `img/muffin-grey.svg`;
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const map = document.querySelector(`.map`);
 const mapPinMain = map.querySelector(`.map__pin--main`);
 const adForm = document.querySelector(`.ad-form`);
@@ -73,6 +75,8 @@ window.constants = {
   PIN_POINTER_HEIGHT,
   MAX_PIN_ON_MAP,
   DEBOUNCE_INTERVAL,
+  FILE_TYPES,
+  AVATAR_SRC,
   mapDragArea,
   minPrice,
   priceLimits,

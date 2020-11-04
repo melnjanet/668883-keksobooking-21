@@ -13,6 +13,7 @@ module.exports = {
     `./js/map.js`,
     `./js/success.js`,
     `./js/card.js`,
+    `./js/photo.js`,
     `./js/form.js`,
     `./js/page.js`,
     `./js/main.js`
