@@ -1,7 +1,5 @@
 "use strict";
 
-const successMessage = document.querySelector(`#success`).content.querySelector(`.success`);
-const errorMessage = document.querySelector(`#error`).content.querySelector(`.error`);
 const photoPreview = document.querySelector(`.ad-form__photo`);
 
 const setValidationCapacityHandler = () => {
@@ -54,67 +52,10 @@ const onTimeoutChange = () => {
 const setPrice = () => {
   window.constants.adForm.price.min = window.constants.minPrice[window.constants.adForm.type.value];
   window.constants.adForm.price.placeholder = window.constants.minPrice[window.constants.adForm.type.value];
-}
+};
 
 const onTypeChange = () => {
   setPrice();
-};
-
-const setSuccessMessage = () => {
-  const successNode = successMessage.cloneNode(true);
-  document.body.appendChild(successNode);
-
-  const onEscPress = (evt) => {
-    if (evt.code === window.constants.ESC_KEY && document.contains(document.querySelector(`.success`))) {
-      evt.preventDefault();
-      document.querySelector(`.success`).remove();
-      document.removeEventListener(`keydown`, onEscPress);
-    }
-  };
-
-  const onClick = (evt) => {
-    if (document.contains(document.querySelector(`.success`))) {
-      evt.preventDefault();
-      document.querySelector(`.success`).remove();
-      document.removeEventListener(`click`, onClick);
-    }
-  };
-
-  document.addEventListener(`keydown`, onEscPress);
-  document.addEventListener(`click`, onClick);
-};
-
-const setErrorMessage = () => {
-  const errorNode = errorMessage.cloneNode(true);
-  document.body.appendChild(errorNode);
-
-  const onEscPress = (evt) => {
-    if (evt.code === window.constants.ESC_KEY && document.contains(document.querySelector(`.error`))) {
-      evt.preventDefault();
-      document.querySelector(`.error`).remove();
-      document.removeEventListener(`keydown`, onEscPress);
-    }
-  };
-
-  const onClick = (evt) => {
-    if (document.contains(document.querySelector(`.error`))) {
-      evt.preventDefault();
-      document.querySelector(`.error`).remove();
-      document.removeEventListener(`click`, onClick);
-    }
-  };
-
-  document.addEventListener(`keydown`, onEscPress);
-  document.addEventListener(`click`, onClick);
-};
-
-const successHandler = () => {
-  resetForm();
-  setSuccessMessage();
-};
-
-const errorHandler = () => {
-  setErrorMessage();
 };
 
 const onAdFormSubmitClick = () => {
@@ -122,7 +63,7 @@ const onAdFormSubmitClick = () => {
   window.util.checkFormValidation(window.constants.adForm);
 
   if (window.constants.adForm.checkValidity()) {
-    window.backend.save(successHandler, errorHandler, new FormData(window.constants.adForm));
+    window.backend.save(window.success.successFormHandler, window.errors.errorFormHandler, new FormData(window.constants.adForm));
   }
 };
 
@@ -131,7 +72,7 @@ const onAdFormSubmit = (evt) => {
   window.util.checkFormValidation(window.constants.adForm);
 
   if (window.constants.adForm.checkValidity()) {
-    window.backend.save(successHandler, errorHandler, new FormData(window.constants.adForm));
+    window.backend.save(window.success.successFormHandler, window.errors.errorFormHandler, new FormData(window.constants.adForm));
   }
 };
 
@@ -141,14 +82,14 @@ const photosReset = () => {
   if (photoPreview.querySelector(`img`)) {
     photoPreview.querySelector(`img`).remove();
   }
-}
+};
 
 const resetForm = () => {
   photosReset();
   window.constants.adForm.reset();
   window.page.setState(true);
   window.page.deactivatedPage();
-}
+};
 
 const onResetFormClick = (evt) => {
   evt.preventDefault();
@@ -172,8 +113,8 @@ const addListenersToFields = () => {
   window.constants.adForm.type.addEventListener(`change`, onTypeChange);
   window.constants.adForm.timein.addEventListener(`change`, onTimeinChange);
   window.constants.adForm.timeout.addEventListener(`change`, onTimeoutChange);
-  window.constants.adForm.avatar.addEventListener('change', window.photo.onChangeAvatar);
-  window.constants.adForm.images.addEventListener('change', window.photo.onChangePhoto);
+  window.constants.adForm.avatar.addEventListener(`change`, window.photo.onChangeAvatar);
+  window.constants.adForm.images.addEventListener(`change`, window.photo.onChangePhoto);
 };
 
 const removeListenersFromFields = () => {
@@ -182,8 +123,8 @@ const removeListenersFromFields = () => {
   window.constants.adForm.type.removeEventListener(`change`, onTypeChange);
   window.constants.adForm.timein.removeEventListener(`change`, onTimeinChange);
   window.constants.adForm.timeout.removeEventListener(`change`, onTimeoutChange);
-  window.constants.adForm.avatar.removeEventListener('change', window.photo.onChangeAvatar);
-  window.constants.adForm.images.removeEventListener('change', window.photo.onChangePhoto);
+  window.constants.adForm.avatar.removeEventListener(`change`, window.photo.onChangeAvatar);
+  window.constants.adForm.images.removeEventListener(`change`, window.photo.onChangePhoto);
 };
 
 window.constants.mapFilter.addEventListener(`change`, window.filters.onMapFilterChange);
@@ -193,6 +134,7 @@ window.form = {
   setCapacityDisabled,
   onResetFormClick,
   onResetFormKeydown,
+  resetForm,
   setPrice,
   setAddress,
   onAdFormSubmit,

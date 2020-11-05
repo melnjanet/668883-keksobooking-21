@@ -1,10 +1,5 @@
 "use strict";
 
-const url = {
-  POST: `https://21.javascript.pages.academy/keksobooking`,
-  GET: `https://21.javascript.pages.academy/keksobooking/data`,
-};
-
 const TIMEOUT_IN_MS = 10000;
 
 const sendXhrRequest = (method, onLoad, onError, data = null) => {
@@ -33,9 +28,9 @@ const sendXhrRequest = (method, onLoad, onError, data = null) => {
   xhr.timeout = TIMEOUT_IN_MS;
 
   if (method === `GET`) {
-    xhr.open(method, url.GET);
+    xhr.open(method, window.constants.url.GET);
   } else if (method === `POST`) {
-    xhr.open(method, url.POST);
+    xhr.open(method, window.constants.url.POST);
   }
 
   xhr.send(data);

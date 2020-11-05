@@ -36,7 +36,7 @@ const activatedPage = () => {
   window.form.setCapacityValue();
   window.form.setCapacityDisabled();
   window.form.setPrice();
-  window.backend.load(window.success.successHandler, window.errors.renderErrorNode);
+  window.backend.load(window.success.successDataHandler, window.errors.renderErrorNode);
   window.constants.adForm.title.focus();
   window.constants.adForm.capacity.style.outline = ``;
   window.form.addListenersToFields();

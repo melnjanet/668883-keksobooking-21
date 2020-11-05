@@ -7,7 +7,9 @@ const renderPinsOnMap = (ads) => {
   const fragment = document.createDocumentFragment();
 
   window.util.getRandomFromArray(ads).forEach((item) => {
-    fragment.appendChild(window.pin.setPin(item));
+    if (item.hasOwnProperty(`offer`)) {
+      fragment.appendChild(window.pin.setPin(item));
+    }
   });
 
   mapPins.appendChild(fragment);
