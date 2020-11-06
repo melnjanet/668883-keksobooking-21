@@ -7,12 +7,17 @@ const PIN_POINTER_HEIGHT = 18;
 const MAX_PIN_ON_MAP = 5;
 const DEBOUNCE_INTERVAL = 1500;
 const AVATAR_SRC = `img/muffin-grey.svg`;
-const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
 const map = document.querySelector(`.map`);
 const mapPinMain = map.querySelector(`.map__pin--main`);
 const adForm = document.querySelector(`.ad-form`);
 const mapFilter = document.querySelector(`.map__filters`);
 let pinsData = [];
+
+const url = {
+  POST: `https://21.javascript.pages.academy/keksobooking`,
+  GET: `https://21.javascript.pages.academy/keksobooking/data`,
+};
 
 const mapDragArea = {
   Y: {
@@ -77,6 +82,7 @@ window.constants = {
   DEBOUNCE_INTERVAL,
   FILE_TYPES,
   AVATAR_SRC,
+  url,
   mapDragArea,
   minPrice,
   priceLimits,
