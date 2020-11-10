@@ -1,12 +1,13 @@
 "use strict";
 
+const map = document.querySelector(`.map`);
 const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const fragment = document.createDocumentFragment();
 
-const removeCard = () => {
-  const mapCard = window.constants.map.querySelector(`.map__card`);
+const remove = () => {
+  const mapCard = map.querySelector(`.map__card`);
 
-  if (window.constants.map.contains(mapCard)) {
+  if (map.contains(mapCard)) {
     mapCard.remove();
   }
 };
@@ -35,7 +36,7 @@ const renderFeatures = (features, container) => {
   });
 };
 
-const setCard = (adsElement) => {
+const set = (adsElement) => {
   const cardElement = cardTemplate.cloneNode(true);
   const {title, address, price, type, rooms, guests, checkin, checkout, description, features, photos} = adsElement.offer;
   const roomsWord = window.util.declension([`комната`, `комнаты`, `комнат`], rooms);
@@ -58,17 +59,17 @@ const setCard = (adsElement) => {
 };
 
 const onPopupCloseClick = () => {
-  removeCard();
+  remove();
   document.removeEventListener(`keydown`, onEscPress);
 };
 
 const onEscPress = (evt) => {
   if (evt.code === window.constants.ESC_KEY) {
-    removeCard();
+    remove();
   }
 };
 
 window.card = {
-  setCard,
-  removeCard,
+  set,
+  remove,
 };

@@ -1,24 +1,27 @@
 "use strict";
 
-const onMainPinEnterDown = (evt) => {
+const mapPinMain = document.querySelector(`.map .map__pin--main`);
+
+const onEnterDown = (evt) => {
   if (evt.key === window.constants.ENTER_KEY) {
     evt.preventDefault();
-    window.page.activatedPage(evt);
+    window.page.activated();
   }
 };
 
-const onMainPinMouseClick = (evt) => {
+const onMouseDown = (evt) => {
+  evt.preventDefault();
+
   if (window.constants.LEFT_MOUSE_BUTTON.includes(evt.button)) {
-    evt.preventDefault();
-    window.page.activatedPage();
+    window.page.activated();
   }
 };
 
-window.constants.mapPinMain.addEventListener(`mousedown`, window.dragging.draggingMainPin);
-window.constants.mapPinMain.addEventListener(`click`, onMainPinMouseClick);
-window.constants.mapPinMain.addEventListener(`keydown`, onMainPinEnterDown);
+mapPinMain.addEventListener(`mousedown`, onMouseDown);
+mapPinMain.addEventListener(`mousedown`, window.dragging.draggingMainPin);
+mapPinMain.addEventListener(`keydown`, onEnterDown);
 
 window.mainPin = {
-  onMainPinMouseClick,
-  onMainPinEnterDown,
+  onMouseDown,
+  onEnterDown,
 };

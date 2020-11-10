@@ -2,7 +2,7 @@
 
 const templateErrorPopup = document.querySelector(`#error`).content.querySelector(`.error`);
 
-const setErrorMessage = (errorStatus) => {
+const setMessage = (errorStatus) => {
   const DEFAULT_ERROR_MESSAGE = `Пожалуйста, перегрузите страницу`;
   let error;
 
@@ -26,44 +26,43 @@ const setErrorMessage = (errorStatus) => {
   return error;
 };
 
+const onEscPress = (evt) => {
+  evt.preventDefault();
+
+  if (evt.code === window.constants.ESC_KEY && document.contains(document.querySelector(`.error`))) {
+    document.querySelector(`.error`).remove();
+    document.removeEventListener(`keydown`, onEscPress);
+  }
+};
+
+const onClick = (evt) => {
+  evt.preventDefault();
+
+  if (document.contains(document.querySelector(`.error`))) {
+    document.querySelector(`.error`).removeEventListener(`click`, onClick);
+    document.querySelector(`.error`).remove();
+  }
+};
+
 const renderErrorNode = (errorMessage) => {
   const errorNode = document.createElement(`div`);
   errorNode.classList.add(`error`, `error-message`);
-  errorNode.textContent = setErrorPopupMessage(errorMessage);
+  errorNode.textContent = setMessage(errorMessage);
   document.body.insertAdjacentElement(`afterbegin`, errorNode);
+
+  document.addEventListener(`keydown`, onEscPress);
+  errorNode.addEventListener(`click`, onClick);
 };
 
-const errorFormHandler = () => {
-  setErrorPopupMessage();
-};
-
-const setErrorPopupMessage = () => {
+const renderPostPopupMessage = () => {
   const errorNode = templateErrorPopup.cloneNode(true);
   document.body.appendChild(errorNode);
 
-  const onEscPress = (evt) => {
-    if (evt.code === window.constants.ESC_KEY && document.contains(document.querySelector(`.error`))) {
-      evt.preventDefault();
-      document.querySelector(`.error`).remove();
-      document.removeEventListener(`keydown`, onEscPress);
-    }
-  };
-
-  const onClick = (evt) => {
-    if (document.contains(document.querySelector(`.error`))) {
-      evt.preventDefault();
-      document.querySelector(`.error`).remove();
-      document.removeEventListener(`click`, onClick);
-    }
-  };
-
   document.addEventListener(`keydown`, onEscPress);
-  document.addEventListener(`click`, onClick);
+  errorNode.addEventListener(`click`, onClick);
 };
 
 window.errors = {
+  renderPostPopupMessage,
   renderErrorNode,
-  setErrorMessage,
-  errorFormHandler,
-  setErrorPopupMessage,
 };

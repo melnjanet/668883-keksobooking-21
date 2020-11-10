@@ -1,6 +1,9 @@
 "use strict";
-
-const mainPinLocation = window.pin.getPinLocation(window.constants.mainPinLocation, window.constants.mainPinSize);
+const map = document.querySelector(`.map`);
+const mapPinMain = map.querySelector(`.map__pin--main`);
+const adForm = document.querySelector(`.ad-form`);
+const mapFilter = document.querySelector(`.map__filters`);
+const mainPinLocation = window.pin.getLocation(window.constants.mainPinLocation, window.constants.mainPinSize);
 
 const setDisabled = (forms, isInactive = true) => {
   forms.forEach((form) => {
@@ -12,52 +15,52 @@ const setDisabled = (forms, isInactive = true) => {
 
 const setState = (isInactive = true) => {
   if (isInactive) {
-    window.constants.adForm.classList.add(`ad-form--disabled`);
-    window.constants.map.classList.add(`map--faded`);
-    window.constants.adForm.querySelector(`.ad-form__submit`).removeEventListener(`click`, window.form.onAdFormSubmitClick);
-    window.constants.adForm.removeEventListener(`submit`, window.form.onAdFormSubmit);
-    document.querySelector(`.ad-form__reset`).removeEventListener(`click`, window.form.onResetFormClick);
-    document.querySelector(`.ad-form__reset`).removeEventListener(`keydown`, window.form.onResetFormKeydown);
+    adForm.classList.add(`ad-form--disabled`);
+    map.classList.add(`map--faded`);
+    adForm.querySelector(`.ad-form__submit`).removeEventListener(`click`, window.form.onSubmitClick);
+    adForm.removeEventListener(`submit`, window.form.onSubmit);
+    document.querySelector(`.ad-form__reset`).removeEventListener(`click`, window.form.onResetClick);
+    document.querySelector(`.ad-form__reset`).removeEventListener(`keydown`, window.form.onResetKeydown);
   } else {
-    window.constants.adForm.classList.remove(`ad-form--disabled`);
-    window.constants.map.classList.remove(`map--faded`);
-    window.constants.adForm.querySelector(`.ad-form__submit`).addEventListener(`click`, window.form.onAdFormSubmitClick);
-    window.constants.adForm.addEventListener(`submit`, window.form.onAdFormSubmit);
-    document.querySelector(`.ad-form__reset`).addEventListener(`click`, window.form.onResetFormClick);
-    document.querySelector(`.ad-form__reset`).addEventListener(`keydown`, window.form.onResetFormKeydown);
+    adForm.classList.remove(`ad-form--disabled`);
+    map.classList.remove(`map--faded`);
+    adForm.querySelector(`.ad-form__submit`).addEventListener(`click`, window.form.onSubmitClick);
+    adForm.addEventListener(`submit`, window.form.onSubmit);
+    document.querySelector(`.ad-form__reset`).addEventListener(`click`, window.form.onResetClick);
+    document.querySelector(`.ad-form__reset`).addEventListener(`keydown`, window.form.onResetKeydown);
   }
 
-  setDisabled([window.constants.mapFilter, window.constants.adForm], isInactive);
+  setDisabled([mapFilter, adForm], isInactive);
 };
 
-const activatedPage = () => {
+const activated = () => {
   setState(false);
-  window.util.setInputValue(window.constants.adForm.querySelector(`#address`), `${mainPinLocation.x}, ${mainPinLocation.y}`);
+  window.util.setInputValue(adForm.querySelector(`#address`), `${mainPinLocation.x}, ${mainPinLocation.y}`);
   window.form.setCapacityValue();
   window.form.setCapacityDisabled();
   window.form.setPrice();
-  window.backend.load(window.success.successDataHandler, window.errors.renderErrorNode);
-  window.constants.adForm.title.focus();
-  window.constants.adForm.capacity.style.outline = ``;
+  window.backend.load(window.success.dataHandler, window.errors.renderErrorNode);
+  adForm.title.focus();
+  adForm.capacity.style.outline = ``;
   window.form.addListenersToFields();
-  window.constants.mapPinMain.removeEventListener(`click`, window.mainPin.onMainPinMouseClick);
-  window.constants.mapPinMain.removeEventListener(`keydown`, window.mainPin.onMainPinEnterDown);
+  mapPinMain.removeEventListener(`mousedown`, window.mainPin.onMouseDown);
+  mapPinMain.removeEventListener(`keydown`, window.mainPin.onEnterDown);
 };
 
-const deactivatedPage = () => {
+const deactivated = () => {
   setState(true);
-  window.map.deletePinsOnMap();
-  window.constants.mapPinMain.style.left = window.constants.initialMainPinLocation.X;
-  window.constants.mapPinMain.style.top = window.constants.initialMainPinLocation.Y;
-  window.util.setInputValue(window.constants.adForm.querySelector(`#address`), `${mainPinLocation.x}, ${mainPinLocation.y}`);
+  window.map.deletePins();
+  mapPinMain.style.left = window.constants.initialMainPinLocation.X;
+  mapPinMain.style.top = window.constants.initialMainPinLocation.Y;
+  window.util.setInputValue(adForm.querySelector(`#address`), `${mainPinLocation.x}, ${mainPinLocation.y}`);
   window.form.removeListenersFromFields();
-  window.constants.mapPinMain.addEventListener(`click`, window.mainPin.onMainPinMouseClick);
-  window.constants.mapPinMain.addEventListener(`keydown`, window.mainPin.onMainPinEnterDown);
+  mapPinMain.addEventListener(`mousedown`, window.mainPin.onMouseDown);
+  mapPinMain.addEventListener(`keydown`, window.mainPin.onEnterDown);
 };
 
 window.page = {
-  activatedPage,
-  deactivatedPage,
+  activated,
+  deactivated,
   setState,
   setDisabled,
 };
