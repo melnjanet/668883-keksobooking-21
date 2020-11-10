@@ -55,9 +55,9 @@ const applyAll = (offers) => {
 };
 
 const onMapFilterChange = () => {
-  window.map.deletePinsOnMap();
-  window.card.removeCard();
-  window.util.debounce(window.map.renderPinsOnMap(window.filters.applyAll(window.constants.pinsData)));
+  window.map.deletePins();
+  window.card.remove();
+  window.util.debounce(window.map.renderPins(window.filters.applyAll(window.constants.pinsData)));
 };
 
 window.filters = {

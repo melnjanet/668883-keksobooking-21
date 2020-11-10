@@ -1,13 +1,14 @@
 "use strict";
 
+const mapFilter = document.querySelector(`.map__filters`);
 const templateSuccessPopup = document.querySelector(`#success`).content.querySelector(`.success`);
 
-const successDataHandler = (data) => {
+const dataHandler = (data) => {
   window.constants.pinsData = data;
   if (window.constants.pinsData.length) {
-    window.map.renderPinsOnMap(window.filters.applyAll(window.constants.pinsData));
+    window.map.renderPins(window.filters.applyAll(window.constants.pinsData));
   } else {
-    window.page.setDisabled([window.constants.mapFilter], true);
+    window.page.setDisabled([mapFilter], true);
   }
 };
 
@@ -35,12 +36,12 @@ const setSuccessPopupMessage = () => {
   document.addEventListener(`click`, onClick);
 };
 
-const successFormHandler = () => {
-  window.form.resetForm();
+const formHandler = () => {
+  window.form.reset();
   setSuccessPopupMessage();
 };
 
 window.success = {
-  successDataHandler,
-  successFormHandler,
+  dataHandler,
+  formHandler,
 };

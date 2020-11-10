@@ -3,30 +3,30 @@
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const pins = [];
 
-const getPinLocation = (location, pinSizes) => {
+const getLocation = (location, pinSizes) => {
   return {
     x: location.x - Math.floor(pinSizes.width / 2),
     y: location.y - pinSizes.height - window.constants.PIN_POINTER_HEIGHT,
   };
 };
 
-const setPin = (ads) => {
+const set = (ads) => {
   const pinElement = pinTemplate.cloneNode(true);
   const pinSizes = {
     width: pinElement.style.width,
     height: pinElement.style.height
   };
 
-  const pinLocation = getPinLocation(ads.location, pinSizes);
+  const pinLocation = getLocation(ads.location, pinSizes);
 
   const onPinClick = () => {
-    window.map.renderCardOnMap(ads);
+    window.map.renderCard(ads);
   };
 
   const onPinEnterPress = (evt) => {
     if (evt.code === window.constants.ENTER_KEY) {
       evt.preventDefault();
-      window.map.renderCardOnMap(ads);
+      window.map.renderCard(ads);
     }
   };
 
@@ -43,6 +43,6 @@ const setPin = (ads) => {
 
 window.pin = {
   pins,
-  setPin,
-  getPinLocation,
+  set,
+  getLocation,
 };

@@ -8,10 +8,7 @@ const MAX_PIN_ON_MAP = 5;
 const DEBOUNCE_INTERVAL = 1500;
 const AVATAR_SRC = `img/muffin-grey.svg`;
 const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
-const map = document.querySelector(`.map`);
-const mapPinMain = map.querySelector(`.map__pin--main`);
-const adForm = document.querySelector(`.ad-form`);
-const mapFilter = document.querySelector(`.map__filters`);
+const mapPinMain = document.querySelector(`.map .map__pin--main`);
 let pinsData = [];
 
 const url = {
@@ -86,14 +83,10 @@ window.constants = {
   mapDragArea,
   minPrice,
   priceLimits,
-  adForm,
-  map,
-  mapPinMain,
   featuresClasses,
   mainPinSize,
   mainPinLocation,
   typesOfAccommodation,
   initialMainPinLocation,
-  mapFilter,
   pinsData,
 };
