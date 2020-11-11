@@ -28,12 +28,13 @@ const draggingMainPin = (evt) => {
       y: mapPinMain.offsetTop - shift.y
     };
 
-    const minY = window.constants.mapDragArea.Y.TOP - (mapPinMain.offsetHeight + window.constants.PIN_POINTER_HEIGHT);
-    const maxY = window.constants.mapDragArea.Y.BOTTOM - (mapPinMain.offsetHeight + window.constants.PIN_POINTER_HEIGHT);
-    const minX = window.constants.mapDragArea.X.LEFT - Math.floor(mapPinMain.offsetWidth / 2);
-    const maxX = window.constants.mapDragArea.X.RIGHT - Math.floor(mapPinMain.offsetWidth / 2);
 
-    if (newCoordinates.y >= minY && newCoordinates.y <= maxY) {
+    const minY = window.constants.MapDragArea.Y.TOP - (mapPinMain.offsetHeight + window.constants.PIN_POINTER_HEIGHT);
+    const maxY = window.constants.MapDragArea.Y.BOTTOM - (mapPinMain.offsetHeight + window.constants.PIN_POINTER_HEIGHT);
+    const minX = window.constants.MapDragArea.X.LEFT - Math.floor(mapPinMain.offsetWidth / 2);
+    const maxX = window.constants.MapDragArea.X.RIGHT - Math.floor(mapPinMain.offsetWidth / 2);
+
+    if (newCoordinates.y > minY && newCoordinates.y < maxY) {
       mapPinMain.style.top = newCoordinates.y + `px`;
     }
 

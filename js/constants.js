@@ -3,20 +3,22 @@
 const LEFT_MOUSE_BUTTON = [0, 4];
 const ENTER_KEY = `Enter`;
 const ESC_KEY = `Escape`;
-const PIN_POINTER_HEIGHT = 18;
+const PIN_POINTER_HEIGHT = 19;
 const MAX_PIN_ON_MAP = 5;
-const DEBOUNCE_INTERVAL = 1500;
+const DEBOUNCE_INTERVAL = 500;
+const MAX_ROOMS = 100;
+const ALL_VALUES = `any`;
 const AVATAR_SRC = `img/muffin-grey.svg`;
 const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
 const mapPinMain = document.querySelector(`.map .map__pin--main`);
 let pinsData = [];
 
-const url = {
+const Url = {
   POST: `https://21.javascript.pages.academy/keksobooking`,
   GET: `https://21.javascript.pages.academy/keksobooking/data`,
 };
 
-const mapDragArea = {
+const MapDragArea = {
   Y: {
     TOP: 130,
     BOTTOM: 630,
@@ -34,7 +36,7 @@ const minPrice = {
   palace: 10000
 };
 
-const priceLimits = {
+const PriceLimits = {
   LOW: 10000,
   HIGH: 50000
 };
@@ -50,8 +52,8 @@ const initialMainPinLocation = {
 };
 
 const mainPinLocation = {
-  x: mapPinMain.offsetLeft,
-  y: mapPinMain.offsetTop,
+  x: mapPinMain.offsetLeft + Math.floor(mainPinSize.width / 2),
+  y: mapPinMain.offsetTop + mainPinSize.height + PIN_POINTER_HEIGHT,
 };
 
 const typesOfAccommodation = {
@@ -79,10 +81,12 @@ window.constants = {
   DEBOUNCE_INTERVAL,
   FILE_TYPES,
   AVATAR_SRC,
-  url,
-  mapDragArea,
+  MAX_ROOMS,
+  ALL_VALUES,
+  Url,
+  MapDragArea,
   minPrice,
-  priceLimits,
+  PriceLimits,
   featuresClasses,
   mainPinSize,
   mainPinLocation,

@@ -8,22 +8,22 @@ const housingGuestsFilterElement = filterForm.querySelector(`#housing-guests`);
 const filterFormFeaturesElement = filterForm.querySelector(`.map__features`);
 
 const getTypeFilter = (data) => {
-  return (housingTypeFilterElement.value !== `any`) ? housingTypeFilterElement.value === data.offer.type : true;
+  return (housingTypeFilterElement.value === window.constants.ALL_VALUES) || housingTypeFilterElement.value === data.offer.type;
 };
 
 const getPriceFilter = (data) => {
-  return housingPriceFilterElement.value === `any` ||
-    (housingPriceFilterElement.value === `low` && data.offer.price < window.constants.priceLimits.LOW) ||
-    (housingPriceFilterElement.value === `middle` && (data.offer.price >= window.constants.priceLimits.LOW && data.offer.price <= window.constants.priceLimits.HIGH) ||
-      (housingPriceFilterElement.value === `high` && data.offer.price > window.constants.priceLimits.HIGH));
+  return housingPriceFilterElement.value === window.constants.ALL_VALUES ||
+    (housingPriceFilterElement.value === `low` && data.offer.price < window.constants.PriceLimits.LOW) ||
+    (housingPriceFilterElement.value === `middle` && (data.offer.price >= window.constants.PriceLimits.LOW && data.offer.price <= window.constants.PriceLimits.HIGH) ||
+      (housingPriceFilterElement.value === `high` && data.offer.price > window.constants.PriceLimits.HIGH));
 };
 
 const getRoomsFilter = (data) => {
-  return housingRoomsFilterElement.value !== `any` ? +housingRoomsFilterElement.value === data.offer.rooms : true;
+  return housingRoomsFilterElement.value === window.constants.ALL_VALUES || housingRoomsFilterElement.value === data.offer.rooms;
 };
 
 const getGuestsFilter = (data) => {
-  return housingGuestsFilterElement.value !== `any` ? +housingGuestsFilterElement.value === data.offer.guests : true;
+  return housingGuestsFilterElement.value === window.constants.ALL_VALUES || housingGuestsFilterElement.value === data.offer.guests;
 };
 
 const getFeaturesFilter = (data) => {
@@ -45,19 +45,27 @@ const getFeaturesFilter = (data) => {
 };
 
 const applyAll = (offers) => {
-  return offers.filter((item) => {
-    return getTypeFilter(item) &&
-      getPriceFilter(item) &&
-      getRoomsFilter(item) &&
-      getGuestsFilter(item) &&
-      getFeaturesFilter(item);
-  }).slice(0, window.constants.MAX_PIN_ON_MAP);
+  let newArray = [];
+
+  offers.forEach((item) => {
+    if (newArray.length < 5 && getTypeFilter(item) &&
+      getPriceFilter(item) && getRoomsFilter(item) &&
+      getGuestsFilter(item) && getFeaturesFilter(item)) {
+      newArray.push(item);
+    }
+  });
+
+  return newArray;
+};
+
+const renderFilteredPins = () => {
+  window.map.deletePins();
+  window.card.remove();
+  window.map.renderPins(window.filters.applyAll(window.constants.pinsData));
 };
 
 const onMapFilterChange = () => {
-  window.map.deletePins();
-  window.card.remove();
-  window.util.debounce(window.map.renderPins(window.filters.applyAll(window.constants.pinsData)));
+  window.util.debounce(renderFilteredPins);
 };
 
 window.filters = {

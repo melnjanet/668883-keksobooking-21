@@ -16,19 +16,22 @@ const setSuccessPopupMessage = () => {
   const successNode = templateSuccessPopup.cloneNode(true);
   document.body.appendChild(successNode);
 
+  const successPopupMessageHandler = (evt) => {
+    evt.preventDefault();
+    document.querySelector(`.success`).remove();
+    document.removeEventListener(`keydown`, onEscPress);
+    document.removeEventListener(`click`, onClick);
+  };
+
   const onEscPress = (evt) => {
     if (evt.code === window.constants.ESC_KEY && document.contains(document.querySelector(`.success`))) {
-      evt.preventDefault();
-      document.querySelector(`.success`).remove();
-      document.removeEventListener(`keydown`, onEscPress);
+      successPopupMessageHandler(evt);
     }
   };
 
   const onClick = (evt) => {
     if (document.contains(document.querySelector(`.success`))) {
-      evt.preventDefault();
-      document.querySelector(`.success`).remove();
-      document.removeEventListener(`click`, onClick);
+      successPopupMessageHandler(evt);
     }
   };
 

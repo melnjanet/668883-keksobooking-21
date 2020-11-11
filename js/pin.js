@@ -1,7 +1,7 @@
 "use strict";
 
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-const pins = [];
+const dataArray = [];
 
 const getLocation = (location, pinSizes) => {
   return {
@@ -19,14 +19,28 @@ const set = (ads) => {
 
   const pinLocation = getLocation(ads.location, pinSizes);
 
-  const onPinClick = () => {
+  const removeActiveClass = () => {
+    const mapPins = document.querySelectorAll(`.map__pin`);
+
+    mapPins.forEach((item) => {
+      item.classList.remove(`map__pin--active`);
+    });
+  };
+
+  const pinHandler = () => {
     window.map.renderCard(ads);
+    pinElement.classList.add(`map__pin--active`);
+  };
+
+  const onPinClick = () => {
+    removeActiveClass();
+    pinHandler();
   };
 
   const onPinEnterPress = (evt) => {
     if (evt.code === window.constants.ENTER_KEY) {
       evt.preventDefault();
-      window.map.renderCard(ads);
+      pinHandler();
     }
   };
 
@@ -36,13 +50,13 @@ const set = (ads) => {
   pinElement.querySelector(`img`).alt = ads.author.title;
   pinElement.addEventListener(`click`, onPinClick);
   pinElement.addEventListener(`keydown`, onPinEnterPress);
-  pins.push(pinElement);
+  dataArray.push(pinElement);
 
   return pinElement;
 };
 
 window.pin = {
-  pins,
+  dataArray,
   set,
   getLocation,
 };

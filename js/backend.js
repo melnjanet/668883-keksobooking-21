@@ -28,9 +28,9 @@ const sendXhrRequest = (method, onLoad, onError, data = null) => {
   xhr.timeout = TIMEOUT_IN_MS;
 
   if (method === `GET`) {
-    xhr.open(method, window.constants.url.GET);
+    xhr.open(method, window.constants.Url.GET);
   } else if (method === `POST`) {
-    xhr.open(method, window.constants.url.POST);
+    xhr.open(method, window.constants.Url.POST);
   }
 
   xhr.send(data);

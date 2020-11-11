@@ -3,7 +3,7 @@ const map = document.querySelector(`.map`);
 const mapPinMain = map.querySelector(`.map__pin--main`);
 const adForm = document.querySelector(`.ad-form`);
 const mapFilter = document.querySelector(`.map__filters`);
-const mainPinLocation = window.pin.getLocation(window.constants.mainPinLocation, window.constants.mainPinSize);
+const mainPinLocation = window.constants.mainPinLocation;
 
 const setDisabled = (forms, isInactive = true) => {
   forms.forEach((form) => {
@@ -14,6 +14,8 @@ const setDisabled = (forms, isInactive = true) => {
 };
 
 const setState = (isInactive = true) => {
+  window.util.setInputValue(adForm.querySelector(`#address`), `${mainPinLocation.x}, ${mainPinLocation.y}`);
+
   if (isInactive) {
     adForm.classList.add(`ad-form--disabled`);
     map.classList.add(`map--faded`);
@@ -35,12 +37,10 @@ const setState = (isInactive = true) => {
 
 const activated = () => {
   setState(false);
-  window.util.setInputValue(adForm.querySelector(`#address`), `${mainPinLocation.x}, ${mainPinLocation.y}`);
   window.form.setCapacityValue();
   window.form.setCapacityDisabled();
   window.form.setPrice();
   window.backend.load(window.success.dataHandler, window.errors.renderErrorNode);
-  adForm.title.focus();
   adForm.capacity.style.outline = ``;
   window.form.addListenersToFields();
   mapPinMain.removeEventListener(`mousedown`, window.mainPin.onMouseDown);
@@ -52,7 +52,6 @@ const deactivated = () => {
   window.map.deletePins();
   mapPinMain.style.left = window.constants.initialMainPinLocation.X;
   mapPinMain.style.top = window.constants.initialMainPinLocation.Y;
-  window.util.setInputValue(adForm.querySelector(`#address`), `${mainPinLocation.x}, ${mainPinLocation.y}`);
   window.form.removeListenersFromFields();
   mapPinMain.addEventListener(`mousedown`, window.mainPin.onMouseDown);
   mapPinMain.addEventListener(`keydown`, window.mainPin.onEnterDown);

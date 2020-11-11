@@ -5,11 +5,11 @@ const mapFilter = document.querySelector(`.map__filters`);
 const photoPreview = document.querySelector(`.ad-form__photo`);
 
 const setValidationCapacityHandler = () => {
-  if (parseInt(adForm.rooms.value, 10) === 100 && parseInt(adForm.capacity.value, 10) > 0) {
+  if (parseInt(adForm.rooms.value, 10) === window.constants.MAX_ROOMS && parseInt(adForm.capacity.value, 10) > 0) {
     adForm.capacity.setCustomValidity(`Не для гостей`);
   } else if (parseInt(adForm.rooms.value, 10) < parseInt(adForm.capacity.value, 10)) {
     adForm.capacity.setCustomValidity(`На всех гостей комнат не хватит`);
-  } else if (parseInt(adForm.rooms.value, 10) !== 100 && !parseInt(adForm.capacity.value, 10)) {
+  } else if (parseInt(adForm.rooms.value, 10) !== window.constants.MAX_ROOMS && !parseInt(adForm.capacity.value, 10)) {
     adForm.capacity.setCustomValidity(`Для гостей`);
   } else {
     adForm.capacity.setCustomValidity(``);
@@ -22,7 +22,7 @@ const setCapacityDisabled = () => {
   Array.from(adForm.capacity.options).forEach((item) => {
     const optionCapacity = parseInt(item.value, 10);
 
-    if (roomValue === 100) {
+    if (roomValue === window.constants.MAX_ROOMS) {
       item.disabled = !!optionCapacity;
     } else {
       item.disabled = roomValue < optionCapacity || !optionCapacity;
@@ -31,7 +31,7 @@ const setCapacityDisabled = () => {
 };
 
 const setCapacityValue = () => {
-  adForm.capacity.value = adForm.rooms.value < 100 ? adForm.rooms.value : 0;
+  adForm.capacity.value = adForm.rooms.value < window.constants.MAX_ROOMS ? adForm.rooms.value : 0;
 };
 
 const onRoomsChange = () => {
@@ -89,6 +89,7 @@ const photosReset = () => {
 const reset = () => {
   photosReset();
   adForm.reset();
+  mapFilter.reset();
   window.page.setState(true);
   window.page.deactivated();
 };

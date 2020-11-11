@@ -16,9 +16,11 @@ const renderPins = (ads) => {
 };
 
 const deletePins = () => {
-  if (window.pin.pins.length > 0) {
-    window.pin.pins.forEach((item) => {
+  if (window.pin.dataArray.length > 0) {
+    window.pin.dataArray.forEach((item) => {
       item.remove();
+      item.removeEventListener(`click`, window.pin.onPinClick);
+      item.addEventListener(`keydown`, window.pin.onPinEnterPress);
     });
   }
 
