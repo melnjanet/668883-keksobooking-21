@@ -6,7 +6,9 @@ const ESC_KEY = `Escape`;
 const PIN_POINTER_HEIGHT = 19;
 const MAX_PIN_ON_MAP = 5;
 const DEBOUNCE_INTERVAL = 500;
+const TIMEOUT_IN_MS = 10000;
 const MAX_ROOMS = 100;
+const OK_STATUS = 200;
 const ALL_VALUES = `any`;
 const AVATAR_SRC = `img/muffin-grey.svg`;
 const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
@@ -47,8 +49,8 @@ const mainPinSize = {
 };
 
 const initialMainPinLocation = {
-  X: mapPinMain.style.left,
-  Y: mapPinMain.style.top,
+  X: 570,
+  Y: 375,
 };
 
 const mainPinLocation = {
@@ -79,10 +81,12 @@ window.constants = {
   PIN_POINTER_HEIGHT,
   MAX_PIN_ON_MAP,
   DEBOUNCE_INTERVAL,
+  TIMEOUT_IN_MS,
   FILE_TYPES,
   AVATAR_SRC,
   MAX_ROOMS,
   ALL_VALUES,
+  OK_STATUS,
   Url,
   MapDragArea,
   minPrice,

@@ -47,13 +47,14 @@ const getFeaturesFilter = (data) => {
 const applyAll = (offers) => {
   let newArray = [];
 
-  offers.forEach((item) => {
-    if (newArray.length < 5 && getTypeFilter(item) &&
-      getPriceFilter(item) && getRoomsFilter(item) &&
-      getGuestsFilter(item) && getFeaturesFilter(item)) {
-      newArray.push(item);
+  for (let i = 0; newArray.length < window.constants.MAX_PIN_ON_MAP && i < offers.length; i++) {
+    if (getTypeFilter(offers[i]) &&
+      getPriceFilter(offers[i]) && getRoomsFilter(offers[i]) &&
+      getGuestsFilter(offers[i]) && getFeaturesFilter(offers[i])
+    ) {
+      newArray.push(offers[i]);
     }
-  });
+  }
 
   return newArray;
 };
@@ -64,11 +65,11 @@ const renderFilteredPins = () => {
   window.map.renderPins(window.filters.applyAll(window.constants.pinsData));
 };
 
-const onMapFilterChange = () => {
+const onChange = () => {
   window.util.debounce(renderFilteredPins);
 };
 
 window.filters = {
   applyAll,
-  onMapFilterChange,
+  onChange,
 };

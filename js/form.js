@@ -116,8 +116,8 @@ const addListenersToFields = () => {
   adForm.type.addEventListener(`change`, onTypeChange);
   adForm.timein.addEventListener(`change`, onTimeinChange);
   adForm.timeout.addEventListener(`change`, onTimeoutChange);
-  adForm.avatar.addEventListener(`change`, window.photo.onChangeAvatar);
-  adForm.images.addEventListener(`change`, window.photo.onChangePhoto);
+  adForm.avatar.addEventListener(`change`, window.upload.onChangeAvatar);
+  adForm.images.addEventListener(`change`, window.upload.onChangePhoto);
 };
 
 const removeListenersFromFields = () => {
@@ -126,11 +126,11 @@ const removeListenersFromFields = () => {
   adForm.type.removeEventListener(`change`, onTypeChange);
   adForm.timein.removeEventListener(`change`, onTimeinChange);
   adForm.timeout.removeEventListener(`change`, onTimeoutChange);
-  adForm.avatar.removeEventListener(`change`, window.photo.onChangeAvatar);
-  adForm.images.removeEventListener(`change`, window.photo.onChangePhoto);
+  adForm.avatar.removeEventListener(`change`, window.upload.onChangeAvatar);
+  adForm.images.removeEventListener(`change`, window.upload.onChangePhoto);
 };
 
-mapFilter.addEventListener(`change`, window.filters.onMapFilterChange);
+mapFilter.addEventListener(`change`, window.filters.onChange);
 
 window.form = {
   setCapacityValue,

@@ -1,13 +1,11 @@
 "use strict";
 
-const TIMEOUT_IN_MS = 10000;
-
 const sendXhrRequest = (method, onLoad, onError, data = null) => {
   const xhr = new XMLHttpRequest();
   xhr.responseType = `json`;
 
   xhr.addEventListener(`load`, () => {
-    if (xhr.status === 200) {
+    if (xhr.status === window.constants.OK_STATUS) {
       if (method === `GET`) {
         onLoad(xhr.response);
       } else {
@@ -25,7 +23,7 @@ const sendXhrRequest = (method, onLoad, onError, data = null) => {
     onError(`Запрос не успел выполниться за ${xhr.timeout} мс`);
   });
 
-  xhr.timeout = TIMEOUT_IN_MS;
+  xhr.timeout = window.constants.TIMEOUT_IN_MS;
 
   if (method === `GET`) {
     xhr.open(method, window.constants.Url.GET);
@@ -48,4 +46,3 @@ window.backend = {
   load,
   save,
 };
-

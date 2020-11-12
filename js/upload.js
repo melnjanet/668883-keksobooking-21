@@ -42,7 +42,7 @@ const onChangePhoto = () => {
   renderPreview(photoChooser, photoPreview);
 };
 
-window.photo = {
+window.upload = {
   onChangeAvatar,
   onChangePhoto,
 };

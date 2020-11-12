@@ -44,7 +44,7 @@ const onClick = (evt) => {
   }
 };
 
-const renderErrorNode = (errorMessage) => {
+const renderNode = (errorMessage) => {
   const errorNode = document.createElement(`div`);
   errorNode.classList.add(`error`, `error-message`);
   errorNode.textContent = setMessage(errorMessage);
@@ -64,5 +64,5 @@ const renderPostPopupMessage = () => {
 
 window.errors = {
   renderPostPopupMessage,
-  renderErrorNode,
+  renderNode,
 };

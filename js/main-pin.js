@@ -18,7 +18,7 @@ const onMouseDown = (evt) => {
 };
 
 mapPinMain.addEventListener(`mousedown`, onMouseDown);
-mapPinMain.addEventListener(`mousedown`, window.dragging.draggingMainPin);
+mapPinMain.addEventListener(`mousedown`, window.dragging.movingMainPin);
 mapPinMain.addEventListener(`keydown`, onEnterDown);
 
 window.mainPin = {

@@ -2,7 +2,7 @@
 
 const mapPinMain = document.querySelector(`.map .map__pin--main`);
 
-const draggingMainPin = (evt) => {
+const movingMainPin = (evt) => {
   evt.preventDefault();
 
   let startCoords = {
@@ -28,7 +28,6 @@ const draggingMainPin = (evt) => {
       y: mapPinMain.offsetTop - shift.y
     };
 
-
     const minY = window.constants.MapDragArea.Y.TOP - (mapPinMain.offsetHeight + window.constants.PIN_POINTER_HEIGHT);
     const maxY = window.constants.MapDragArea.Y.BOTTOM - (mapPinMain.offsetHeight + window.constants.PIN_POINTER_HEIGHT);
     const minX = window.constants.MapDragArea.X.LEFT - Math.floor(mapPinMain.offsetWidth / 2);
@@ -42,7 +41,7 @@ const draggingMainPin = (evt) => {
       mapPinMain.style.left = newCoordinates.x + `px`;
     }
 
-    window.form.setAddress(newCoordinates.x + Math.floor(mapPinMain.offsetWidth / 2),
+    window.form.setAddress(newCoordinates.x + Math.ceil(mapPinMain.offsetWidth / 2),
         newCoordinates.y + (mapPinMain.offsetHeight + window.constants.PIN_POINTER_HEIGHT));
   };
 
@@ -58,5 +57,5 @@ const draggingMainPin = (evt) => {
 };
 
 window.dragging = {
-  draggingMainPin,
+  movingMainPin,
 };
